@@ -4,23 +4,34 @@
 
     <v-container class="my-5">
 
-      <v-row class="mb-3">
-        <v-btn small text color="grey" @click="sortBy('title')">
-          <v-icon small left>
-            mdi-folder
-          </v-icon>
-          <span class="caption text-capitalize">
-            By project/name
-          </span>
-        </v-btn>
-        <v-btn small text color="grey" @click="sortBy('person')">
-          <v-icon small left>
-            mdi-account
-          </v-icon>
-          <span class="caption text-capitalize">
-            By person
-          </span>
-        </v-btn>
+      <v-row class="my-3">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn small text color="grey" @click="sortBy('title')" v-bind="attrs" v-on="on">
+              <v-icon small left>
+                mdi-folder
+              </v-icon>
+              <span class="caption text-capitalize">
+                By project/name
+              </span>
+            </v-btn>
+          </template>
+          <span>Sort projects by project name</span>
+        </v-tooltip>
+        
+        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn small text color="grey" @click="sortBy('person')" v-bind="attrs" v-on="on">
+              <v-icon small left>
+                mdi-account
+              </v-icon>
+              <span class="caption text-capitalize">
+                By person
+              </span>
+            </v-btn>
+          </template>
+          <span>Sort projects by person</span>
+        </v-tooltip>
       </v-row>
 
       <v-card flat v-for="project in projects" :key="project.title">

@@ -1,5 +1,5 @@
 <template>
-  <div class="projects">
+  <div class="projects mx-4 mb-4">
     <h1 class="subheading grey--text">Projects</h1>
 
     <v-container class="my-5">

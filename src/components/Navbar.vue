@@ -17,6 +17,11 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app class="primary">
+
+      <v-layout column align-center>
+        This is where the avatar goes
+      </v-layout>
+
       <v-list>
         <v-list-item
           v-for="link in links"

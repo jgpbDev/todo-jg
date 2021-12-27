@@ -1,9 +1,11 @@
+// This commit is only to know that I changed the git config file
+
 <template>
   <div class="team mx-4 mb-4">
     <h1 class="subheading grey--text">Team</h1>
 
     <v-container class="my-5">
-      
+
       <v-row>
         <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
           <v-card flat class="text-center ma-3">                    <!-- Text utility class inside Vuetify -->

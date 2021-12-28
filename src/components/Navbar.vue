@@ -17,6 +17,16 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app class="primary">
+
+      <v-layout column align-center>
+        <v-flex class="mt-5">
+          <v-avatar size="100">
+            <img src="/dori-avatar.png">
+          </v-avatar>
+        </v-flex>
+        <p class="white--text subheading mt-3">jgpbDev</p>
+      </v-layout>
+
       <v-list>
         <v-list-item
           v-for="link in links"

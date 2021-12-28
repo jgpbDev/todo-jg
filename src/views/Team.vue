@@ -1,5 +1,3 @@
-// This commit is only to know that I changed the git config file
-
 <template>
   <div class="team mx-4 mb-4">
     <h1 class="subheading grey--text">Team</h1>
@@ -10,7 +8,9 @@
         <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
           <v-card flat class="text-center ma-3">                    <!-- Text utility class inside Vuetify -->
             <v-responsive class="pt-4">
-              image goes here
+              <v-avatar size="100" class="green lighten-2">
+                <img :src="person.avatar">
+              </v-avatar>
             </v-responsive>
             <v-card-text>
               <div class="subheading">{{person.name}}</div>
@@ -35,11 +35,11 @@
 export default {
   data: () => ({
     team: [
-      { name: 'jgpbDev', role: 'Web developer' },
-      { name: 'Alansín', role: 'Graphic designer' },
-      { name: 'Kenvinsillo', role: 'Web developer' },
-      { name: 'El Pepe', role: 'Social media maverick' },
-      { name: 'Diegol', role: 'Sales guru'}
+      { name: 'jgpbDev', role: 'Web developer', avatar:'/dori-avatar.png' },
+      { name: 'Alansín', role: 'Graphic designer', avatar:'/avatar-1.png' },
+      { name: 'Kenvinsillo', role: 'Web developer', avatar:'/avatar-4.png' },
+      { name: 'El Pepe', role: 'Social media maverick', avatar:'/avatar-2.png' },
+      { name: 'Diegol', role: 'Sales guru', avatar:'/avatar-5.png'}
     ]
   })
 };

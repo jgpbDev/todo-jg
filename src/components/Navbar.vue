@@ -1,5 +1,10 @@
 <template>
   <nav>
+    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>Awesome! Project added successfully:)</span>
+      <v-btn text class="ml-3" color="white" @click="snackbar = false">Okay</v-btn>
+    </v-snackbar>
+
     <v-app-bar flat app class="grey lighten-4">
       <v-app-bar-nav-icon
         class="grey--text"
@@ -44,7 +49,7 @@
         </v-flex>
         <p class="white--text subheading mt-3">jgpbDev</p>
         <v-flex class="mt-4 mb-3">
-          <Popup />
+          <Popup @projectAdded="snackbar = true"/>
         </v-flex>
       </v-layout>
 
@@ -78,6 +83,7 @@ export default {
   },
   data: () => ({
     drawer: false,
+    snackbar: false,
     links: [
       { icon: "mdi-view-dashboard", text: "Home", route: "/" },
       { icon: "mdi-folder", text: "My projects", route: "/projects" },

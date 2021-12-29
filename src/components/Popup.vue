@@ -17,9 +17,9 @@
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-text-field text label="Due date" prepend-icon="mdi-calendar-range" :value="due" v-bind="attrs" v-on="on"></v-text-field>
+              <v-text-field text label="Due date" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
             </template>
-            <v-date-picker v-model="formattedDate"></v-date-picker>
+            <v-date-picker v-model="due"></v-date-picker>
           </v-menu>
           
           <v-btn text class="success mx-0 mt-3" @click="submit">Add project</v-btn>
@@ -31,6 +31,7 @@
 
 <script>
 import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 
 export default {
   data: () => ({
@@ -41,12 +42,13 @@ export default {
   }),
   methods: {
     submit() {
-      console.log(this.title, this.content)
+      typeof this.due == 'string' ? console.log('The date is a string: ', this.due) : console.log('The date is not a string: ', this.due);
     }
   },
   computed: {
     formattedDate() {
-      return this.due ? format(this.due, 'do MMM YYYY') : ''
+      // Here we have to notice that the library used changed and today doesn't have support for strings
+      return this.due ? format(parseISO(this.due), 'do MMM yyyy') : '';
     }
   }
 };

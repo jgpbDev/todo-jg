@@ -60,19 +60,27 @@
 </template>
 
 <script>
+import db from '@/fb'
+import { collection, getDocs } from 'firebase/firestore';
+
 export default {
   data: () => ({
-    projects: [
-      { title: 'Design a new website', person: 'jgpbDev', due: '1st Jan 2019', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-      { title: 'Code up the homepage', person: 'Alansín', due: '10th Jan 2019', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-      { title: 'Design video thumbnails', person: 'Kevinsillo', due: '20th Dec 2018', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-      { title: 'Create a community forum', person: 'El Pepe', due: '20th Oct 2018', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!'},
-    ]
+    projects: []
   }),
   methods: {
     sortBy(prop) {
       this.projects.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
-    }
+    },
+  },
+  async created() {
+    const querySnapshot = await getDocs(collection(db, "projects"));
+    
+    querySnapshot.forEach((doc) => {      
+      this.projects.push({
+        ...doc.data(),
+        id: doc.id
+      });
+    });
   }
 };
 </script>

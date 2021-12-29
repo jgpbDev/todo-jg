@@ -30,10 +30,10 @@ export default {
     ]
   }),
   computed: {
-    myProjects(){
+    myProjects() {
       return this.projects.filter(elementInArray => {
         // Remember when we talked about the importance of having an array when using a v-for
-        return elementInArray.person === 'jgpbDev'
+        return elementInArray.person === 'jgpbDev';
       });
     }
   }

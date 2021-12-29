@@ -11,9 +11,9 @@
         Add a new project
       </v-card-title>
       <v-card-text>
-        <v-form class="px-3">
-          <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder"></v-text-field>
-          <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline"></v-textarea>
+        <v-form class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
+          <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
+          <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline" :rules="inputRules"></v-textarea>
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -38,11 +38,16 @@ export default {
     dialog: false,
     title: "", 
     content: "",
-    due: null   //To format the date we installed date-fns with npm
+    due: null,   //To format the date we installed date-fns with npm
+    inputRules: [
+      v => (v || '').length >= 3 || `A minimum of 3 characters is required`
+    ]
   }),
   methods: {
     submit() {
-      typeof this.due == 'string' ? console.log('The date is a string: ', this.due) : console.log('The date is not a string: ', this.due);
+      if(this.$refs.form.validate()){
+        console.log('The form is valid');
+      }
     }
   },
   computed: {

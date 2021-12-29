@@ -22,7 +22,7 @@
             <v-date-picker v-model="due"></v-date-picker>
           </v-menu>
           
-          <v-btn text class="success mx-0 mt-3" @click="submit">Add project</v-btn>
+          <v-btn text class="success mx-0 mt-3" @click="submit" :loading="loading">Add project</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -38,6 +38,7 @@ import { collection, addDoc } from 'firebase/firestore';
 export default {
   data: () => ({
     dialog: false,
+    loading: false,
     title: "", 
     content: "",
     due: null,   //To format the date we installed date-fns with npm
@@ -46,8 +47,12 @@ export default {
     ]
   }),
   methods: {
+    // This was problematic because in the end we import the addDoc and the collection functions in this 
+    // document instead of in the fb.js file, also we declared as an async function this submit method
     async submit() {
       if(this.$refs.form.validate()){
+        this.loading = true;
+
         await addDoc(collection(db, "projects"), {
           title: this.title,
           content: this.content,
@@ -56,8 +61,9 @@ export default {
           status: 'ongoing'
         }).then(() => {
           console.log('Added to DB');
+          this.dialog = false;
+          this.loading = false;
         });
-
       }
     }
   },

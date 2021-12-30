@@ -73,9 +73,9 @@ export default {
     },
   },
   async created() {
-    const querySnapshot = await getDocs(collection(db, "projects"));
-    
-    querySnapshot.forEach((doc) => {      
+    console.log(this)
+    const allDocs = await getDocs(collection(db, "projects"));
+    allDocs.forEach((doc) => {      
       this.projects.push({
         ...doc.data(),
         id: doc.id

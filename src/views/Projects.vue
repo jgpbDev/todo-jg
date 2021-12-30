@@ -24,7 +24,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 
 export default {
   data: () => ({
-    projects: []
+    projects: [],
   }),
   computed: {
     myProjects() {
@@ -35,11 +35,13 @@ export default {
     }
   },
   async created() {
-    await onSnapshot(collection(db, 'projects'), (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        this.projects.push(doc.data());
+    await onSnapshot(collection(db, 'projects'), (updatedDocs) => {
+      this.projects = [];
+      updatedDocs.forEach((doc) => {
+        if(!this.projects.includes(doc.data())) {
+          this.projects.push(doc.data());
+        }
       });
-      console.log("Current projects in CA: ", this.projects);
     });
   }
 };

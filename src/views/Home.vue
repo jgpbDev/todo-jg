@@ -61,7 +61,7 @@
 
 <script>
 import db from '@/fb'
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export default {
   data: () => ({
@@ -73,12 +73,12 @@ export default {
     },
   },
   async created() {
-    console.log(this)
-    const allDocs = await getDocs(collection(db, "projects"));
-    allDocs.forEach((doc) => {      
-      this.projects.push({
-        ...doc.data(),
-        id: doc.id
+    await onSnapshot(collection(db, 'projects'), (updatedDocs) => {
+      this.projects = [];
+      updatedDocs.forEach((doc) => {
+        if(!this.projects.includes(doc.data())) {
+          this.projects.push(doc.data());
+        }
       });
     });
   }

@@ -5,6 +5,7 @@
       <v-btn text class="ml-3" color="white" @click="snackbar = false">Okay</v-btn>
     </v-snackbar>
 
+
     <v-app-bar flat app class="grey lighten-4">
       <v-app-bar-nav-icon
         class="grey--text"
@@ -40,7 +41,6 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app class="primary">
-
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
@@ -76,14 +76,16 @@
 
 <script>
 import Popup from './Popup.vue'
+import store from '@/store/store';
 
 export default {
   components: {
-    Popup
+    Popup,
   },
   data: () => ({
     drawer: false,
     snackbar: false,
+    store : store,
     links: [
       { icon: "mdi-view-dashboard", text: "Home", route: "/" },
       { icon: "mdi-folder", text: "My projects", route: "/projects" },

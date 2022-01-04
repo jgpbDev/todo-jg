@@ -33,19 +33,7 @@
           <span>Sort projects by person</span>
         </v-tooltip>
 
-        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('person')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-plus-circle
-              </v-icon>
-              <span class="caption text-capitalize">
-                Vuex counter test
-              </span>
-            </v-btn>
-          </template>
-          <span>Adds one with the Vuex counter</span>
-        </v-tooltip>
+        <ButtonCounter @incrementInStore="vuexCounter = true"/>
       </v-row>
 
       <v-card flat v-for="project in projects" :key="project.title">
@@ -76,9 +64,13 @@
 <script>
 import db from '@/fb'
 import { collection, getDocs } from 'firebase/firestore';
-import store from '@/store/store';
+import ButtonCounter from '@/components/ButtonCounter.vue'
+
 
 export default {
+  components: {
+    ButtonCounter
+  },
   data: () => ({
     projects: []
   }),
@@ -86,9 +78,6 @@ export default {
     sortBy(prop) {
       this.projects.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
     },
-    counterVuex() {
-      store.commit('increment');
-    }
   },
   async created() {
     console.log(this)

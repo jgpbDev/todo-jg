@@ -1,9 +1,13 @@
 <template>
+
   <div class="home mx-4 mb-4">
     <h1 class="subheading grey--text">Homepage</h1>
 
     <v-container class="my-5">
-
+      <v-snackbar v-model="vuexCounter" :timeout="4000" top color="success">
+        <span>The counter in the store is: {{store.state.count}} </span>
+        <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
+      </v-snackbar>
       <v-row class="my-3">
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
@@ -65,6 +69,7 @@
 import db from '@/fb'
 import { collection, getDocs } from 'firebase/firestore';
 import ButtonCounter from '@/components/ButtonCounter.vue'
+import store from '@/store/store';
 
 
 export default {
@@ -72,7 +77,9 @@ export default {
     ButtonCounter
   },
   data: () => ({
-    projects: []
+    projects: [],
+    vuexCounter: false,
+    store : store
   }),
   methods: {
     sortBy(prop) {

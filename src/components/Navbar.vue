@@ -4,10 +4,7 @@
       <span>Awesome! Project added successfully:)</span>
       <v-btn text class="ml-3" color="white" @click="snackbar = false">Okay</v-btn>
     </v-snackbar>
-    <v-snackbar v-model="vuexCounter" :timeout="4000" top color="success">
-      <span>The counter in the store is: {{store.state.count}} </span>
-      <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
-    </v-snackbar>
+
 
     <v-app-bar flat app class="grey lighten-4">
       <v-app-bar-nav-icon
@@ -88,7 +85,6 @@ export default {
   data: () => ({
     drawer: false,
     snackbar: false,
-    vuexCounter: false,
     store : store,
     links: [
       { icon: "mdi-view-dashboard", text: "Home", route: "/" },

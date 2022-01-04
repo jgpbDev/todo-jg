@@ -87,7 +87,11 @@ export default {
     },
   },
   async created() {
+    console.log("Projects From Store at first", store.projectsFromStore)
+    store.commit('gettingUpdatedDocs');
     console.log(this)
+    console.log(this.projects)
+    console.log("Projects From Store after commit", store.projectsFromStore)
     const allDocs = await getDocs(collection(db, "projects"));
     allDocs.forEach((doc) => {      
       this.projects.push({

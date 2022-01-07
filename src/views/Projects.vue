@@ -2,7 +2,7 @@
   <div class="projects mx-4 mb-4">
     <h1 class="subheading grey--text">Projects</h1>
 
-    <v-container class="my-5">
+    <v-container v-if="apiStateLoaded === true" class="my-5">
       <v-expansion-panels>
         <v-expansion-panel v-for="project in myProjects" :key="project.title">
           <v-expansion-panel-header>
@@ -19,30 +19,40 @@
 </template>
 
 <script>
-import db from '@/fb'
-import { collection, onSnapshot } from 'firebase/firestore';
+import store from '@/store/store';
+import ENUM from '@/store/enums';
+
+import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
-    projects: [],
+    projects: store.state.projectsFromStore,
   }),
+  methods: {
+    ...mapActions(["gettingUpdatedDocs"]),
+    assignProjects() {
+      this.projects = store.state.projectsFromStore;
+    }
+  },
   computed: {
     myProjects() {
       return this.projects.filter(elementInArray => {
         // Remember when we talked about the importance of having an array when using a v-for
         return elementInArray.person === 'jgpbDev';
       });
+    },
+    ...mapState({
+      apiState: state => state.apiState,
+      projectsFromStore: state => state.projectsFromStore
+    }),
+    apiStateLoaded() {
+      this.assignProjects();
+      return this.apiState === ENUM.LOADED;
     }
   },
   async created() {
-    await onSnapshot(collection(db, 'projects'), (updatedDocs) => {
-      this.projects = [];
-      updatedDocs.forEach((doc) => {
-        if(!this.projects.includes(doc.data())) {
-          this.projects.push(doc.data());
-        }
-      });
-    });
+    this.gettingUpdatedDocs();
   }
 };
 </script>

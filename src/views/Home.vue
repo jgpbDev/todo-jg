@@ -3,7 +3,7 @@
   <div class="home mx-4 mb-4">
     <h1 class="subheading grey--text">Homepage</h1>
 
-    <v-container class="my-5">
+    <v-container v-if="apiStateLoaded === true" class="my-5">
       <v-snackbar v-model="vuexCounter" :timeout="4000" top color="success">
         <span>The counter in the store is: {{store.state.count}} </span>
         <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
@@ -54,8 +54,11 @@
             <div class="caption grey--text">Due by</div>
             <div>{{project.due}}</div>
           </v-flex>
-          <v-layout align-end justify-end>
-            <v-chip small :class="`${project.status} white--text caption my-2`">{{project.status}}</v-chip>
+          <v-layout align-end justify-end align-center>
+            <v-chip small :class="`${project.status} white--text caption ma-2`">{{project.status}}</v-chip>
+            <v-btn text class="ma-2" color="delete" fab x-small dark @click="logDeleting(`${project.id}`)">
+              <v-icon small>mdi-trash-can</v-icon>
+            </v-btn>
           </v-layout>
         </v-row>
         <v-divider></v-divider>
@@ -66,40 +69,55 @@
 </template>
 
 <script>
-import db from '@/fb'
-import { collection, getDocs } from 'firebase/firestore';
-import ButtonCounter from '@/components/ButtonCounter.vue'
+import ButtonCounter from '@/components/ButtonCounter.vue';
 import store from '@/store/store';
+import ENUM from '@/store/enums';
 
+import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   components: {
     ButtonCounter
   },
   data: () => ({
-    projects: [],
+    projects: store.state.projectsFromStore,
     vuexCounter: false,
-    store : store
+    store: store
   }),
   methods: {
     sortBy(prop) {
       this.projects.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
     },
+    ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
+    assignProjects() {
+      this.projects = store.state.projectsFromStore;
+    },
+    logDeleting(projectId) {
+      this.deleteDoc(projectId);
+    }
   },
-  async created() {
-    console.log("Projects From Store at first", store.projectsFromStore)
-    store.commit('gettingUpdatedDocs');
-    console.log(this)
-    console.log(this.projects)
-    console.log("Projects From Store after commit", store.projectsFromStore)
-    const allDocs = await getDocs(collection(db, "projects"));
-    allDocs.forEach((doc) => {      
-      this.projects.push({
-        ...doc.data(),
-        id: doc.id
-      });
-    });
-  }
+  computed: {
+    ...mapState({
+      apiState: state => state.apiState,
+      projectsFromStore: state => state.projectsFromStore
+    }),
+    apiStateLoaded() {
+      this.assignProjects();
+      return this.apiState === ENUM.LOADED;
+    }
+  },
+  created() {
+    this.gettingUpdatedDocs();
+  },
+  // beforeRouteEnter: async function(to, from, next) {
+  //   try {
+  //     await this.gettingUpdatedDocs();
+  //     next();
+  //   } catch(exception) {
+  //     next(exception);
+  //   }
+  // }
 };
 </script>
 

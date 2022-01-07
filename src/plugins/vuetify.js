@@ -11,7 +11,8 @@ export default new Vuetify({
                 secondary: '#29C24C',
                 success: '#13A88A',
                 info: '#25E8C1',
-                error: '#8F010E'
+                error: '#8F010E',
+                delete: '#e90606'
             }
         }
     }

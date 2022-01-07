@@ -2,13 +2,13 @@
   <v-dialog v-model="dialog" max-width="600px">
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="secondary" elevation="0" v-bind="attrs" v-on="on">
-        Add new project
+        Add new task
       </v-btn>
     </template>
 
     <v-card>
       <v-card-title class="text-h5">
-        Add a new project
+        Add a new task
       </v-card-title>
       <v-card-text>
         <v-form class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
@@ -22,7 +22,7 @@
             <v-date-picker v-model="due"></v-date-picker>
           </v-menu>
           
-          <v-btn text class="success mx-0 mt-3" @click="submit" :loading="loading">Add project</v-btn>
+          <v-btn text class="success mx-0 mt-3" @click="submit" :loading="loading">Add task</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -63,7 +63,7 @@ export default {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
-          this.$emit('projectAdded');
+          this.$emit('taskAdded');
         });
       }
     }

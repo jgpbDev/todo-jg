@@ -1,5 +1,4 @@
 <template>
-
   <div class="home mx-4 mb-4">
     <h1 class="subheading grey--text">Homepage</h1>
 
@@ -8,7 +7,7 @@
         <span>The counter in the store is: {{store.state.count}} </span>
         <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
       </v-snackbar>
-      <v-row class="my-3">
+      <v-row class="my-3">    <!-- Options buttons bar -->
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn small text color="grey" @click="sortBy('title')" v-bind="attrs" v-on="on">
@@ -36,7 +35,6 @@
           </template>
           <span>Sort tasks by person</span>
         </v-tooltip>
-
         <ButtonCounter @incrementInStore="vuexCounter = true"/>
       </v-row>
 
@@ -54,7 +52,7 @@
             <div class="caption grey--text">Due by</div>
             <div>{{task.due}}</div>
           </v-flex>
-          <v-layout align-end justify-end align-center>
+          <v-layout align-end align-center justify-end>
             <v-chip small :class="`${task.status} white--text caption ma-2`">{{task.status}}</v-chip>
             <v-btn text class="ma-2" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
               <v-icon small>mdi-trash-can</v-icon>

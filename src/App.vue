@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <Navbar />
+    <v-container v-if="currentView !== 'Login'">
+      <Navbar />
+    </v-container>
     <v-main class="grey lighten-4">
       <router-view />
     </v-main>
@@ -15,6 +17,11 @@ export default {
   name: "App",
   components: {
     Navbar,
+  },
+  computed: {
+    currentView() {
+      return this.$route.name;
+    }
   },
   data: () => ({
     //

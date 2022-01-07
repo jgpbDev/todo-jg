@@ -88,7 +88,7 @@ export default {
     store : store,
     links: [
       { icon: "mdi-view-dashboard", text: "Home", route: "/" },
-      { icon: "mdi-folder", text: "My projects", route: "/projects" },
+      { icon: "mdi-folder", text: "My tasks", route: "/tasks" },
       { icon: "mdi-account-multiple", text: "Team", route: "/team" },
     ],
   }),

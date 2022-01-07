@@ -16,11 +16,11 @@
                 mdi-folder
               </v-icon>
               <span class="caption text-capitalize">
-                By project/name
+                By task/name
               </span>
             </v-btn>
           </template>
-          <span>Sort projects by project name</span>
+          <span>Sort tasks by task name</span>
         </v-tooltip>
         
         <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
@@ -34,29 +34,29 @@
               </span>
             </v-btn>
           </template>
-          <span>Sort projects by person</span>
+          <span>Sort tasks by person</span>
         </v-tooltip>
 
         <ButtonCounter @incrementInStore="vuexCounter = true"/>
       </v-row>
 
-      <v-card flat v-for="project in projects" :key="project.title">
-        <v-row dense no-gutters :class="`pa-6 project ${project.status}`"> <!-- Notice the importance of the dense & no-gutters props -->
+      <v-card flat v-for="task in tasks" :key="task.title">
+        <v-row dense no-gutters :class="`pa-6 task ${task.status}`"> <!-- Notice the importance of the dense & no-gutters props -->
           <v-flex xs12 md6>
-            <div class="caption grey--text">Project Title</div>
-            <div>{{project.title}}</div>
+            <div class="caption grey--text">Task Title</div>
+            <div>{{task.title}}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
             <div class="caption grey--text">Person</div>
-            <div>{{project.person}}</div>
+            <div>{{task.person}}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
             <div class="caption grey--text">Due by</div>
-            <div>{{project.due}}</div>
+            <div>{{task.due}}</div>
           </v-flex>
           <v-layout align-end justify-end align-center>
-            <v-chip small :class="`${project.status} white--text caption ma-2`">{{project.status}}</v-chip>
-            <v-btn text class="ma-2" color="delete" fab x-small dark @click="logDeleting(`${project.id}`)">
+            <v-chip small :class="`${task.status} white--text caption ma-2`">{{task.status}}</v-chip>
+            <v-btn text class="ma-2" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
               <v-icon small>mdi-trash-can</v-icon>
             </v-btn>
           </v-layout>
@@ -81,34 +81,35 @@ export default {
     ButtonCounter
   },
   data: () => ({
-    projects: store.state.projectsFromStore,
+    tasks: store.state.tasksFromStore,
     vuexCounter: false,
     store: store
   }),
   methods: {
     sortBy(prop) {
-      this.projects.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
+      this.tasks.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
     },
     ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
-    assignProjects() {
-      this.projects = store.state.projectsFromStore;
+    setTasks() {
+      this.tasks = store.state.tasksFromStore;
     },
-    logDeleting(projectId) {
-      this.deleteDoc(projectId);
+    logDeleting(taskId) {
+      this.deleteDoc(taskId);
     }
   },
   computed: {
     ...mapState({
       apiState: state => state.apiState,
-      projectsFromStore: state => state.projectsFromStore
+      tasksFromStore: state => state.tasksFromStore
     }),
     apiStateLoaded() {
-      this.assignProjects();
+      this.setTasks();
       return this.apiState === ENUM.LOADED;
     }
   },
   created() {
     this.gettingUpdatedDocs();
+    console.warn('Tasks :', this.tasks);
   },
   // beforeRouteEnter: async function(to, from, next) {
   //   try {
@@ -122,13 +123,13 @@ export default {
 </script>
 
 <style>
-.project.complete {
+.task.complete {
   border-left: 4px solid #3cd1c2;
 }
-.project.ongoing {
+.task.ongoing {
   border-left: 4px solid orange;
 }
-.project.overdue {
+.task.overdue {
   border-left: 4px solid tomato;
 }
 

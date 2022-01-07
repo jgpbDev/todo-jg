@@ -53,7 +53,7 @@ export default {
       if(this.$refs.form.validate()){
         this.loading = true;
 
-        await addDoc(collection(db, "projects"), {
+        await addDoc(collection(db, "tasks"), {
           title: this.title,
           content: this.content,
           due: format(parseISO(this.due), 'do MMM yyyy'),

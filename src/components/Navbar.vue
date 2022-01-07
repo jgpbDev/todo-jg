@@ -1,7 +1,7 @@
 <template>
   <nav>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
-      <span>Awesome! Project added successfully:)</span>
+      <span>Awesome! Task added successfully:)</span>
       <v-btn text class="ml-3" color="white" @click="snackbar = false">Okay</v-btn>
     </v-snackbar>
 
@@ -34,7 +34,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn text color="grey">
+      <v-btn text color="grey" router :to="'/'">
         <span>Sign out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -49,7 +49,7 @@
         </v-flex>
         <p class="white--text subheading mt-3">jgpbDev</p>
         <v-flex class="mt-4 mb-3">
-          <Popup @projectAdded="snackbar = true"/>
+          <Popup @taskAdded="snackbar = true"/>
         </v-flex>
       </v-layout>
 
@@ -87,8 +87,8 @@ export default {
     snackbar: false,
     store : store,
     links: [
-      { icon: "mdi-view-dashboard", text: "Home", route: "/" },
-      { icon: "mdi-folder", text: "My projects", route: "/projects" },
+      { icon: "mdi-view-dashboard", text: "Home", route: "/home" },
+      { icon: "mdi-folder", text: "My tasks", route: "/tasks" },
       { icon: "mdi-account-multiple", text: "Team", route: "/team" },
     ],
   }),

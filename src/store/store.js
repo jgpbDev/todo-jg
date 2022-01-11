@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import router from "@/router";
 import db from '@/fb'
 import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword  } from "firebase/auth";
 
 import ENUM from '@/store/enums'
 
@@ -41,6 +41,12 @@ export default new Vuex.Store({
     SIGN_IN(state, userCredential) {
       state.loggedIn = userCredential.user
       router.push({path: '/home'});
+    },
+    SIGN_UP(state, userCredential) {
+      state.loggedIn = userCredential.user
+      router.push({
+        path: '/home'
+      });
     }
   },
   actions: {
@@ -54,11 +60,23 @@ export default new Vuex.Store({
     },
     async signIn({commit}, {email, password}) {
       const auth = getAuth();
-      console.log('Email from store: ' + email + ' and password from store: ' + password);
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
           commit('SIGN_IN', userCredential);
-          alert(`You are logged in as ${userCredential.user}`);
+          alert("You are logged in as: " + userCredential.user);
+        },
+        err => {
+          console.log(err.code);
+          alert(err.message);
+        }
+      );
+    },
+    async registerNewUser({commit}, {email, password}) {
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          commit('SIGN_UP', userCredential.user);
+          alert("You've been registered and logged in as: " + userCredential.user);
         },
         err => {
           console.log(err.code);

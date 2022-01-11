@@ -27,7 +27,7 @@
                     label="Email"
                     class="rounded-lg custom-label-color"
                     height="2.5rem"
-                    v-model="email"
+                    v-model="credentials.email"
                     type="email">
                     <template v-slot:prepend-inner>
                       <v-icon class="mr-4">mdi-account</v-icon>
@@ -39,7 +39,7 @@
                     label="Password"
                     class="rounded-lg custom-label-color"
                     height="2.5rem"
-                    v-model="password"
+                    v-model="credentials.password"
                     :rules="passRules"
                     :type="showPass ? 'text' : 'password'"
                     :append-icon="showPass ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
@@ -73,35 +73,27 @@
 </template>
 
 <script>
-import router from '@/router'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-const auth = getAuth();
+import { mapActions } from "vuex";
 
 export default {
   data: () => ({
     showPass: false,
-    email: "",
-    password: "",
+    credentials: {
+      email: "",
+      password: "",
+    },
     loading: false,
     passRules: [
       (value) => !!value || "This is an obligatory field.",
     ]
   }),
   methods: {
-    login: function(e) {
+    ...mapActions(["signIn"]),
+    login() {
       this.loading = true;
-      signInWithEmailAndPassword(auth, this.email, this.password)
-      .then((userCredential) => {
-          alert(`You are logged in as ${userCredential.user}`);
-          router.push({ path: '/home' });
-        },
-        err => {
-          console.log(err.code);
-          alert(err.message);
-        }
-      );
+      console.log('Email from component: ' + this.email + 'and pass from component: ' + this.password);
+      this.signIn(this.credentials);
       this.loading = false;
-      e.preventDefault();
     }
   }
 };

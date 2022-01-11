@@ -109,14 +109,6 @@ export default {
     this.gettingUpdatedDocs();
     console.warn('Tasks :', this.tasks);
   },
-  // beforeRouteEnter: async function(to, from, next) {
-  //   try {
-  //     await this.gettingUpdatedDocs();
-  //     next();
-  //   } catch(exception) {
-  //     next(exception);
-  //   }
-  // }
 };
 </script>
 

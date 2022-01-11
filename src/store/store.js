@@ -1,8 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import router from "@/router";
 import db from '@/fb'
-import { collection, doc, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 import ENUM from '@/store/enums'
 
 Vue.use(Vuex);
@@ -16,7 +19,8 @@ export default new Vuex.Store({
       {content: 'Proyecto de base en store 2', due: '2st March 2022', person: 'Amigo2', status: 'ongoing', title: 'Titulo de proyecto 2'},
     ],
     updatedDocs: [],
-    taskToDelete: ''
+    taskToDelete: '',
+    userLoggedIn: false,
   },
   mutations: {
     increment(state) {
@@ -34,6 +38,10 @@ export default new Vuex.Store({
       });
       state.apiState = ENUM.LOADED;
     },
+    SIGN_IN(state, userCredential) {
+      state.loggedIn = userCredential.user
+      router.push({path: '/home'});
+    }
   },
   actions: {
     async gettingUpdatedDocs({commit}) {
@@ -44,5 +52,19 @@ export default new Vuex.Store({
     async deleteDoc(_, taskToDelete) {
       await deleteDoc(doc(db, 'tasks', taskToDelete));
     },
+    async signIn({commit}, {email, password}) {
+      const auth = getAuth();
+      console.log('Email from store: ' + email + ' and password from store: ' + password);
+      await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+          commit('SIGN_IN', userCredential);
+          alert(`You are logged in as ${userCredential.user}`);
+        },
+        err => {
+          console.log(err.code);
+          alert(err.message);
+        }
+      );
+    }
   }
 });

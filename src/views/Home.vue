@@ -1,5 +1,5 @@
 <template>
-  <div class="home mx-4 mb-4">
+  <div v-if="userLoggedIn === true" class="home mx-4 mb-4">
     <h1 class="subheading grey--text">Homepage</h1>
 
     <v-container v-if="apiStateLoaded === true" class="my-5">
@@ -87,7 +87,7 @@ export default {
     sortBy(prop) {
       this.tasks.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
     },
-    ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
+    ...mapActions(["gettingUpdatedDocs", "deleteDoc", "checkAuth"]),
     setTasks() {
       this.tasks = store.state.tasksFromStore;
     },
@@ -98,15 +98,22 @@ export default {
   computed: {
     ...mapState({
       apiState: state => state.apiState,
+      session: state => state.session,
       tasksFromStore: state => state.tasksFromStore
     }),
     apiStateLoaded() {
       this.setTasks();
       return this.apiState === ENUM.LOADED;
+    },
+    userLoggedIn() {
+      return this.session !== false;
     }
   },
   created() {
     this.gettingUpdatedDocs();
+    if(this.userLoggedIn === false){
+      this.checkAuth();
+    } 
     console.warn('Tasks :', this.tasks);
   },
 };

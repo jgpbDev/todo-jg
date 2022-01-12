@@ -34,7 +34,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn text color="grey" router :to="'/'">
+      <v-btn text color="grey" :loading="loading" @click="logout">
         <span>Sign out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -77,6 +77,7 @@
 <script>
 import Popup from './Popup.vue'
 import store from '@/store/store';
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -85,6 +86,7 @@ export default {
   data: () => ({
     drawer: false,
     snackbar: false,
+    loading: false,
     store : store,
     links: [
       { icon: "mdi-view-dashboard", text: "Home", route: "/home" },
@@ -92,6 +94,14 @@ export default {
       { icon: "mdi-account-multiple", text: "Team", route: "/team" },
     ],
   }),
+  methods: {
+    ...mapActions(["signOut"]),
+    logout() {
+      this.loading = true;    //This could be listened in the state
+      this.signOut();
+      this.loading = false;
+    }
+  }
 };
 </script>
 

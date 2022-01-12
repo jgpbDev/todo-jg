@@ -78,6 +78,7 @@
 <script>
 import SignUpForm from '@/components/SignUpForm.vue'
 import { mapActions } from "vuex";
+// import store from '@/store/store';
 
 export default {
   components: {
@@ -100,7 +101,13 @@ export default {
       this.loading = true;    //This could be listened in the state
       this.signIn(this.credentials);
       this.loading = false;
-    }
+    },
+    // checkState() {
+    //   store.commit('allState');
+    // }
+  }, 
+  created() {
+    // this.checkState();
   }
 };
 </script>

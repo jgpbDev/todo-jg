@@ -22,13 +22,13 @@
 import store from '@/store/store';
 
 export default {
-    methods: {
-        counterVuex() {
-            store.commit('increment');
-            this.$emit('incrementInStore');
-            console.log(store.state.count);
-        }
+  methods: {
+    counterVuex() {
+      store.commit('increment');
+      this.$emit('incrementInStore');
+      console.log(store.state.count);
     }
+  }
 };
 </script>
 

@@ -103,11 +103,10 @@ export default {
     apiStateLoaded() {
       this.setTasks();
       return this.apiState === ENUM.LOADED;
-    }
+    },
   },
   created() {
     this.gettingUpdatedDocs();
-    console.warn('Tasks :', this.tasks);
   },
 };
 </script>

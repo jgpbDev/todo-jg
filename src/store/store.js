@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import router from "@/router";
 import db from '@/fb'
 import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword  } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 import ENUM from '@/store/enums'
 
@@ -14,17 +14,17 @@ export default new Vuex.Store({
   state: {
     apiState: ENUM.INIT,
     count: 0,
-    tasksFromStore: [
-      {content: 'Proyecto de base en store 1', due: '1st February 2022', person: 'Amigo', status: 'complete', title: 'Titulo de proyecto 1'},
-      {content: 'Proyecto de base en store 2', due: '2st March 2022', person: 'Amigo2', status: 'ongoing', title: 'Titulo de proyecto 2'},
-    ],
+    tasksFromStore: [],
     updatedDocs: [],
     taskToDelete: '',
-    userLoggedIn: false,
+    session: false,
   },
   mutations: {
     increment(state) {
       state.count++;
+    },
+    allState(state) {
+      console.log(state);
     },
     UPDATE_DOCS(state, updatedDocs) {
       let taskData;
@@ -39,14 +39,15 @@ export default new Vuex.Store({
       state.apiState = ENUM.LOADED;
     },
     SIGN_IN(state, userCredential) {
-      state.loggedIn = userCredential.user
+      state.session = userCredential.user;
       router.push({path: '/home'});
     },
-    SIGN_UP(state, userCredential) {
-      state.loggedIn = userCredential.user
-      router.push({
-        path: '/home'
-      });
+    SIGN_OUT(state) {
+      state.session = false;
+      router.push({path: '/'});
+    },
+    SET_SESSION(state, userCredential) {
+      state.session = userCredential;
     }
   },
   actions: {
@@ -58,31 +59,57 @@ export default new Vuex.Store({
     async deleteDoc(_, taskToDelete) {
       await deleteDoc(doc(db, 'tasks', taskToDelete));
     },
-    async signIn({commit}, {email, password}) {
+    async signIn(_, {email, password}) {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-          commit('SIGN_IN', userCredential);
-          alert("You are logged in as: " + userCredential.user);
-        },
-        err => {
-          console.log(err.code);
-          alert(err.message);
-        }
-      );
+        console.log("You are logged in as: " + userCredential.user);
+        // commit('SIGN_IN', userCredential)
+        }).catch((error) => {
+          console.error(error.code);
+          alert(error.message);
+        });
+    },
+    async signOut(){
+      const auth = getAuth();
+      await signOut(auth).then(() => {
+        console.log("The user logged out");
+        // commit('SIGN_OUT')
+      }).catch((error) => {
+        console.error(error.code);
+        alert(error.message);
+      });
     },
     async registerNewUser({commit}, {email, password}) {
       const auth = getAuth();
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          commit('SIGN_UP', userCredential.user);
           alert("You've been registered and logged in as: " + userCredential.user);
-        },
-        err => {
-          console.log(err.code);
-          alert(err.message);
+          commit('SIGN_IN', userCredential)
+        }).catch((error) => {
+          console.log(error.code);
+          alert(error.message);
+        });
+    },
+    async checkAuth({commit}) {
+      const auth = getAuth();
+      await onAuthStateChanged(auth, (user) => {
+        // const currentUser = auth.currentUser;
+        // console.log('CURRENT USER: ', currentUser);
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
+          console.log('[CHECK_AUTH] User from firebase: ', user);
+          commit('SET_SESSION', user);
+          router.currentRoute.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
+        } else {
+          console.log('[CHECK_AUTH] Without user from firebase: ', user);
+          alert('CHECKAUTH: The user changed its status to logged out');
+          commit('SIGN_OUT');
         }
-      );
+      });
     }
   }
 });

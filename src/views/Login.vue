@@ -78,7 +78,6 @@
 <script>
 import SignUpForm from '@/components/SignUpForm.vue'
 import { mapActions } from "vuex";
-// import store from '@/store/store';
 
 export default {
   components: {

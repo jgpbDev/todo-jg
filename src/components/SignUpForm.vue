@@ -88,7 +88,6 @@
                   </v-flex>
                 </v-row>
               </v-card>
-              <SignUpForm />
             </v-flex>
           </v-col>
         </v-row>

@@ -64,6 +64,7 @@ export default {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
+          this.$refs.form.reset();
           this.$emit('taskAdded');
         });
       }

@@ -111,9 +111,9 @@ export default {
   },
   created() {
     this.gettingUpdatedDocs();
-    if(this.userLoggedIn === false){
-      this.checkAuth();
-    } 
+    // if(this.userLoggedIn === false){
+      // this.checkAuth();    
+    // } 
     console.warn('Tasks :', this.tasks);
   },
 };

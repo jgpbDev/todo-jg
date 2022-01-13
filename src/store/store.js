@@ -20,7 +20,7 @@ export default new Vuex.Store({
     ],
     updatedDocs: [],
     taskToDelete: '',
-    session: false,
+    session: '',
   },
   mutations: {
     increment(state) {
@@ -66,7 +66,7 @@ export default new Vuex.Store({
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        alert("You are logged in as: " + userCredential.user);
+        // alert("You are logged in as: " + userCredential.user);
         commit('SIGN_IN', userCredential)
         }).catch((error) => {
           console.error(error.code);
@@ -76,7 +76,7 @@ export default new Vuex.Store({
     async signOut({commit}){
       const auth = getAuth();
       await signOut(auth).then(() => {
-        alert("The user just logged out");
+        // alert("The user logged out");
         commit('SIGN_OUT')
       }).catch((error) => {
         console.error(error.code);
@@ -104,10 +104,11 @@ export default new Vuex.Store({
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
           alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
-          console.log('User from firebase: ',user);
+          console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
           // ...
         } else {
+          console.log('[CHECK_AUTH] Without user from firebase: ', user);
           alert('CHECKAUTH: The user changed its status to logged out');
           commit('SIGN_OUT');
         }

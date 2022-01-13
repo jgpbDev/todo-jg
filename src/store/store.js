@@ -65,8 +65,8 @@ export default new Vuex.Store({
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("You are logged in as: " + userCredential.user);
-        // commit('SIGN_IN', userCredential)
+        alert("You are logged in as: " + userCredential.user.email + ' and your uid: ' + userCredential.user.uid);
+        console.log(userCredential)
         }).catch((error) => {
           console.error(error.code);
           alert(error.message);
@@ -75,7 +75,7 @@ export default new Vuex.Store({
     async signOut(){
       const auth = getAuth();
       await signOut(auth).then(() => {
-        console.log("The user logged out");
+        alert("The user logged out");
         // commit('SIGN_OUT')
       }).catch((error) => {
         console.error(error.code);
@@ -101,14 +101,13 @@ export default new Vuex.Store({
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
-          const uid = user.uid;
-          alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
+          // alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
           console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
           router.currentRoute.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
         } else {
+          // alert('CHECKAUTH: The user changed its status to logged out');
           console.log('[CHECK_AUTH] Without user from firebase: ', user);
-          alert('CHECKAUTH: The user changed its status to logged out');
           commit('SIGN_OUT', router.currentRoute.name);
         }
       });

@@ -35,6 +35,32 @@
           </template>
           <span>Sort tasks by person</span>
         </v-tooltip>
+        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn small text color="grey" @click="sortBy('createdAt')" v-bind="attrs" v-on="on">
+              <v-icon small left>
+                mdi-sort-calendar-ascending
+              </v-icon>
+              <span class="caption text-capitalize">
+                By creation date
+              </span>
+            </v-btn>
+          </template>
+          <span>Sort tasks by creation date</span>
+        </v-tooltip>
+        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn small text color="grey" @click="sortBy('due')" v-bind="attrs" v-on="on">
+              <v-icon small left>
+                mdi-sort-calendar-ascending
+              </v-icon>
+              <span class="caption text-capitalize">
+                By due date
+              </span>
+            </v-btn>
+          </template>
+          <span>Sort tasks by due date</span>
+        </v-tooltip>
         <ButtonCounter @incrementInStore="vuexCounter = true"/>
       </v-row>
 
@@ -44,7 +70,7 @@
             <div class="caption grey--text">Task Title</div>
             <div>{{task.title}}</div>
           </v-flex>
-          <v-flex xs6 sm4 md1 class="mr-6">
+          <v-flex xs6 sm4 md1 class="mx-6">
             <div class="caption grey--text">Person</div>
             <div>{{task.person}}</div>
           </v-flex>

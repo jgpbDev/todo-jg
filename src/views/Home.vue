@@ -40,13 +40,17 @@
 
       <v-card flat v-for="task in tasks" :key="task.title">
         <v-row dense no-gutters :class="`pa-6 task ${task.status}`"> <!-- Notice the importance of the dense & no-gutters props -->
-          <v-flex xs12 md6>
+          <v-flex xs12 md5>
             <div class="caption grey--text">Task Title</div>
             <div>{{task.title}}</div>
           </v-flex>
-          <v-flex xs6 sm4 md2>
+          <v-flex xs6 sm4 md1 class="mr-6">
             <div class="caption grey--text">Person</div>
             <div>{{task.person}}</div>
+          </v-flex>
+          <v-flex xs6 sm4 md2>
+            <div class="caption grey--text">Created at</div>
+            <div>{{task.createdAt}}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
             <div class="caption grey--text">Due by</div>

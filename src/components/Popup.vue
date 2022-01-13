@@ -56,6 +56,7 @@ export default {
         await addDoc(collection(db, "tasks"), {
           title: this.title,
           content: this.content,
+          createdAt: this.currentFormattedDate,
           due: format(parseISO(this.due), 'do MMM yyyy'),
           person: 'jgpbDev',
           status: 'ongoing'
@@ -72,6 +73,14 @@ export default {
     formattedDate() {
       // Here we have to notice that the library used changed and today doesn't have support for strings
       return this.due ? format(parseISO(this.due), 'do MMM yyyy') : '';
+    },
+    currentFormattedDate() {
+      const y = new Date().getFullYear();
+      const m = ("0" + (new Date().getMonth() + 1)).slice(-2);
+      const d = ("0" + new Date().getDate()).slice(-2);
+      const currentDate = y + '-' + m + '-' + d;
+
+      return format(parseISO(currentDate), 'do MMM yyyy')
     }
   }
 };

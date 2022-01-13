@@ -77,6 +77,7 @@
 <script>
 import Popup from './Popup.vue'
 import store from '@/store/store';
+
 import { mapActions } from "vuex";
 
 export default {
@@ -101,6 +102,10 @@ export default {
       this.signOut();
       this.loading = false;
     }
+  },
+  computed: {
+  },
+  created() {
   }
 };
 </script>

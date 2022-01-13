@@ -102,12 +102,9 @@ export default {
       this.signIn(this.credentials);
       this.loading = false;
     },
-    // checkState() {
-    //   store.commit('allState');
-    // }
   }, 
   created() {
-    // this.checkState();
+    
   }
 };
 </script>

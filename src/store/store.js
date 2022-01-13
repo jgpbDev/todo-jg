@@ -14,13 +14,10 @@ export default new Vuex.Store({
   state: {
     apiState: ENUM.INIT,
     count: 0,
-    tasksFromStore: [
-      {content: 'Proyecto de base en store 1', due: '1st February 2022', person: 'Amigo', status: 'complete', title: 'Titulo de proyecto 1'},
-      {content: 'Proyecto de base en store 2', due: '2st March 2022', person: 'Amigo2', status: 'ongoing', title: 'Titulo de proyecto 2'},
-    ],
+    tasksFromStore: [],
     updatedDocs: [],
     taskToDelete: '',
-    session: '',
+    session: false,
   },
   mutations: {
     increment(state) {
@@ -76,7 +73,7 @@ export default new Vuex.Store({
     async signOut(){
       const auth = getAuth();
       await signOut(auth).then(() => {
-        // alert("The user logged out");
+        console.log("The user logged out");
         // commit('SIGN_OUT')
       }).catch((error) => {
         console.error(error.code);
@@ -106,7 +103,7 @@ export default new Vuex.Store({
           alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
           console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
-          this.$route.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
+          router.currentRoute.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
         } else {
           console.log('[CHECK_AUTH] Without user from firebase: ', user);
           alert('CHECKAUTH: The user changed its status to logged out');

@@ -62,22 +62,22 @@ export default new Vuex.Store({
     async deleteDoc(_, taskToDelete) {
       await deleteDoc(doc(db, 'tasks', taskToDelete));
     },
-    async signIn({commit}, {email, password}) {
+    async signIn(_, {email, password}) {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // alert("You are logged in as: " + userCredential.user);
-        commit('SIGN_IN', userCredential)
+        console.log("You are logged in as: " + userCredential.user);
+        // commit('SIGN_IN', userCredential)
         }).catch((error) => {
           console.error(error.code);
           alert(error.message);
         });
     },
-    async signOut({commit}){
+    async signOut(){
       const auth = getAuth();
       await signOut(auth).then(() => {
         // alert("The user logged out");
-        commit('SIGN_OUT')
+        // commit('SIGN_OUT')
       }).catch((error) => {
         console.error(error.code);
         alert(error.message);
@@ -106,7 +106,7 @@ export default new Vuex.Store({
           alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
           console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
-          // ...
+          this.$route.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
         } else {
           console.log('[CHECK_AUTH] Without user from firebase: ', user);
           alert('CHECKAUTH: The user changed its status to logged out');

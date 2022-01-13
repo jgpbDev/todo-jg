@@ -42,9 +42,11 @@ export default new Vuex.Store({
       state.session = userCredential.user;
       router.push({path: '/home'});
     },
-    SIGN_OUT(state) {
+    SIGN_OUT(state, currentView) {
       state.session = false;
-      router.push({path: '/'});
+      if (currentView !== 'Login') {
+        router.push({path: '/'});
+      }
     },
     SET_SESSION(state, userCredential) {
       state.session = userCredential;
@@ -107,7 +109,7 @@ export default new Vuex.Store({
         } else {
           console.log('[CHECK_AUTH] Without user from firebase: ', user);
           alert('CHECKAUTH: The user changed its status to logged out');
-          commit('SIGN_OUT');
+          commit('SIGN_OUT', router.currentRoute.name);
         }
       });
     }

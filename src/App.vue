@@ -34,12 +34,10 @@ export default {
       return this.$route.name;
     },
     userLoggedIn() {
-      console.log('SESSION VALUE: ', this.session)
       return this.session !== false;
     }
   },
   created() {
-    console.log(this.userLoggedIn);
     this.checkAuth();
   }
 };

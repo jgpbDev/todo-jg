@@ -86,8 +86,8 @@ export default {
   data: () => ({
     showPass: false,
     credentials: {
-      email: "",
-      password: "",
+      email: "admin@todojg.com",
+      password: "adminPassword",
     },
     loading: false,
     passRules: [

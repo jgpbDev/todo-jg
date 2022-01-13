@@ -4,7 +4,7 @@
       <span>Awesome! Task added successfully:)</span>
       <v-btn text class="ml-3" color="white" @click="snackbar = false">Okay</v-btn>
     </v-snackbar>
-
+    <Notifications />
 
     <v-app-bar flat app class="grey lighten-4">
       <v-app-bar-nav-icon
@@ -76,6 +76,7 @@
 
 <script>
 import Popup from './Popup.vue'
+import Notifications from '@/components/Notifications';
 import store from '@/store/store';
 
 import { mapActions } from "vuex";
@@ -83,6 +84,7 @@ import { mapActions } from "vuex";
 export default {
   components: {
     Popup,
+    Notifications
   },
   data: () => ({
     drawer: false,

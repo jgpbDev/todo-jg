@@ -38,10 +38,6 @@ export default new Vuex.Store({
       });
       state.apiState = ENUM.LOADED;
     },
-    SIGN_IN(state, userCredential) {
-      state.session = userCredential.user;
-      router.push({path: '/home'});
-    },
     SIGN_OUT(state, currentView) {
       state.session = false;
       if (currentView !== 'Login') {
@@ -65,8 +61,8 @@ export default new Vuex.Store({
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        alert("You are logged in as: " + userCredential.user.email + ' and your uid: ' + userCredential.user.uid);
-        console.log(userCredential)
+        // alert("You are logged in as: " + userCredential.user.email + ' and your uid: ' + userCredential.user.uid);
+        console.log('userCredential from sign in', userCredential)
         }).catch((error) => {
           console.error(error.code);
           alert(error.message);
@@ -104,7 +100,7 @@ export default new Vuex.Store({
           // alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
           console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
-          router.currentRoute.name === 'Login' ? commit('SIGN_IN', user) : console.log("You're already at Home");
+          router.currentRoute.name === 'Login' ? router.push({path: '/home'}) : console.log("You're already at Home");
         } else {
           // alert('CHECKAUTH: The user changed its status to logged out');
           console.log('[CHECK_AUTH] Without user from firebase: ', user);

@@ -26,6 +26,11 @@ const routes = [{
     path: '/team',
     name: 'Team',
     component: Team
+  }, 
+  {
+    path: '*',
+    name: 'Login',
+    component: Login
   }
 ]
 

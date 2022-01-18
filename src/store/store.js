@@ -39,7 +39,7 @@ export default new Vuex.Store({
       state.apiState = ENUM.LOADED;
     },
     SIGN_OUT(state, currentView) {
-      state.session = false;
+      state.session = null;
       if (currentView !== 'Login') {
         router.push({path: '/'});
       }
@@ -70,7 +70,7 @@ export default new Vuex.Store({
     async signOut(){
       const auth = getAuth();
       await signOut(auth).then(() => {
-        alert("The user logged out");
+        // alert("The user logged out");
         // commit('SIGN_OUT')
       }).catch((error) => {
         console.error(error.code);

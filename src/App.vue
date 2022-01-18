@@ -34,11 +34,8 @@ export default {
       return this.$route.name;
     },
     userLoggedIn() {
-      return this.session !== false;
+      return this.session !== null;
     },
-    // logInSnackbar() {
-    //   return this.userLoggedIn === true ? true : false;
-    // }
   },
   created() {
     this.checkAuth();

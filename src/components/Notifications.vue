@@ -1,8 +1,10 @@
 <template>
-  <v-snackbar :value="logInSnackbar" :timeout="4000" top color="success">
-    <span>You're logged as {{this.session.email}} with uid {{this.session.uid}}</span>
-    <v-btn text class="ml-3" color="white" @click="logInSnackbar = false">Okay</v-btn>
-  </v-snackbar>
+  <div>
+    <v-snackbar :value="logInSnackbar"  top color="success">
+      <p class="mb-0">You're logged as <span class="font-weight-black">{{this.session.email}}</span></p> 
+      <p class="mb-0">with uid <span class="font-weight-black">{{this.session.uid}}</span></p>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>
@@ -10,15 +12,19 @@ import { mapState } from "vuex";
 
 export default {
   name:"Notifications",
+  data: () => ({
+    
+  }),
   computed: {
     ...mapState({
       session: state => state.session,
     }),
     logInSnackbar() {
-      return this.session !== false ? true : false;
-    }
+      return this.session !== null ? true : false;
+    },
   }
 }
+
 </script>
 
 <style>

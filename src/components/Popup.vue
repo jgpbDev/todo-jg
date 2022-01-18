@@ -13,7 +13,7 @@
       <v-card-text>
         <v-form class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
           <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
-          <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline" :rules="inputRules"></v-textarea>
+          <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline"></v-textarea>
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -52,7 +52,6 @@ export default {
     async submit() {
       if(this.$refs.form.validate()){
         this.loading = true;
-
         await addDoc(collection(db, "tasks"), {
           title: this.title,
           content: this.content,

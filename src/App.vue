@@ -34,8 +34,8 @@ export default {
       return this.$route.name;
     },
     userLoggedIn() {
-      return this.session !== false;
-    }
+      return this.session !== null;
+    },
   },
   created() {
     this.checkAuth();

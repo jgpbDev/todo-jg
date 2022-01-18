@@ -83,8 +83,8 @@
             <div>{{task.due}}</div>
           </v-flex>
           <v-layout align-end align-center justify-end>
-            <v-chip small :class="`${task.status} white--text caption ma-2`">{{task.status}}</v-chip>
-            <v-btn text class="ma-2" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
+            <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
+            <v-btn text class="ma-0" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
               <v-icon small>mdi-trash-can</v-icon>
             </v-btn>
           </v-layout>

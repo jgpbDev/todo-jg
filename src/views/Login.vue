@@ -1,5 +1,8 @@
 <template>
   <v-container fill-height>
+    <v-snackbar :value="logOutSnackbar"  top color="success">
+      <span>You've just logged out</span> 
+    </v-snackbar>
     <v-row fill-height align="center" justify="center">
       <v-col justify="center" align="center">
         <v-flex xs11 sm11 md6 lg6>
@@ -77,6 +80,7 @@
 
 <script>
 import SignUpForm from '@/components/SignUpForm.vue'
+import { mapState } from "vuex";
 import { mapActions } from "vuex";
 
 export default {
@@ -86,14 +90,22 @@ export default {
   data: () => ({
     showPass: false,
     credentials: {
-      email: "",
-      password: "",
+      email: "admin@todojg.com",
+      password: "adminPassword",
     },
     loading: false,
     passRules: [
       (value) => !!value || "This is an obligatory field.",
     ]
   }),
+  computed: {
+    ...mapState({
+      session: state => state.session,
+    }),
+    logOutSnackbar() {
+      return this.session === null ? true : false;
+    }
+  },
   methods: {
     ...mapActions(["signIn"]),
     login() {
@@ -103,8 +115,8 @@ export default {
     },
   }, 
   created() {
-    
-  }
+    console.log('SESSION IN STORE: ', this.session);
+}
 };
 </script>
 

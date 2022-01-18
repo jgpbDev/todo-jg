@@ -17,7 +17,7 @@ export default new Vuex.Store({
     tasksFromStore: [],
     updatedDocs: [],
     taskToDelete: '',
-    session: false,
+    session: null,
   },
   mutations: {
     increment(state) {
@@ -61,12 +61,11 @@ export default new Vuex.Store({
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // alert("You are logged in as: " + userCredential.user.email + ' and your uid: ' + userCredential.user.uid);
         console.log('userCredential from sign in', userCredential)
-        }).catch((error) => {
-          console.error(error.code);
-          alert(error.message);
-        });
+      }).catch((error) => {
+        console.error(error.code);
+        alert(error.message);
+      });
     },
     async signOut(){
       const auth = getAuth();
@@ -97,10 +96,9 @@ export default new Vuex.Store({
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
-          // alert('CHECKAUTH: User is signed in, this is its uid: ' + uid);
           console.log('[CHECK_AUTH] User from firebase: ', user);
           commit('SET_SESSION', user);
-          router.currentRoute.name === 'Login' ? router.push({path: '/home'}) : console.log("You're already at Home");
+          router.currentRoute.name === 'Login' ? router.push({path: '/home'}) : console.log("You're already inside the app");
         } else {
           // alert('CHECKAUTH: The user changed its status to logged out');
           console.log('[CHECK_AUTH] Without user from firebase: ', user);

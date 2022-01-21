@@ -130,4 +130,7 @@ export default {
 .v-text-field input {
   color: #166929 !important;
 }
+.v-textarea textarea {
+  color: #166929 !important;
+}
 </style>

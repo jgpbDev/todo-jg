@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
-    <v-snackbar :value="logOutSnackbar"  top color="success">
-      <span>You've just logged out</span> 
+    <v-snackbar top content-class="justify-content" :value="logOutSnackbar" color="success">
+      <span>You're logged out</span> 
     </v-snackbar>
     <v-row fill-height align="center" justify="center">
       <v-col justify="center" align="center">

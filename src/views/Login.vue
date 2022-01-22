@@ -23,7 +23,7 @@
                       </v-card>
                     </v-flex>
                   </v-row>
-                  <v-form class="mt-6" ref="form">
+                  <v-form id="loginFormId" class="mt-6" ref="form">
                     <!-- Important to give a reference to the form to use it in the Vue instance -->
                     <v-text-field
                       solo
@@ -122,16 +122,20 @@ export default {
 
 <style>
 .v-text-field .v-input__control .v-input__slot {
-  min-height: auto !important;
-  display: flex !important;
-  align-items: center !important;
+  min-height: auto;
+  display: flex;
+  align-items: center;
 }
-
+/* This works fine */
 .custom-label-color .v-label {
-  color: #bdbdbd !important;
+  color: #219C3D;
 }
 
-.v-icon {
-  color: #bdbdbd !important;
+#loginFormId .v-text-field input {
+  color:#166929;
+}
+
+#loginFormId .v-icon {
+  color: #219C3D;
 }
 </style>

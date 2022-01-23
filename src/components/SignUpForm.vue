@@ -44,7 +44,7 @@
                       <v-card-title class="pa-0 primary--text">
                         Sign up to TODOJG
                       </v-card-title>
-                      <v-form class="mt-6" ref="form">
+                      <v-form id="signUpFormId" class="mt-6" ref="form">
                         <v-text-field
                           solo
                           flat
@@ -124,13 +124,11 @@ export default {
 </script>
 
 <style>
+/* This works fine */
 .v-input__icon--append .v-icon { 
-    color: #219C3D !important;
+    color: #219C3D;
 }
-.v-text-field input {
-  color: #166929 !important;
-}
-.v-textarea textarea {
-  color: #166929 !important;
+#signUpFormId .v-text-field input {
+  color: #166929;
 }
 </style>

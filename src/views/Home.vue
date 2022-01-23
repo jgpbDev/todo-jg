@@ -82,7 +82,7 @@
             <div class="caption grey--text">Due by</div>
             <div>{{task.due}}</div>
           </v-flex>
-          <v-layout align-end align-center justify-end>
+          <v-layout id="chip-container" align-end align-center justify-end>
             <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
             <v-btn text class="ma-0" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
               <v-icon small>mdi-trash-can</v-icon>
@@ -152,13 +152,13 @@ export default {
   border-left: 4px solid tomato;
 }
 
-.v-chip.complete {
-  background: #3cd1c2 !important; 
+#chip-container .v-chip.complete {
+  background: #3cd1c2;
 }
-.v-chip.ongoing {
-  background: orange !important;
+#chip-container .v-chip.ongoing {
+  background: orange;
 }
-.v-chip.overdue {
-  background: tomato !important;
+#chip-container .v-chip.overdue {
+  background: tomato;
 }
 </style>

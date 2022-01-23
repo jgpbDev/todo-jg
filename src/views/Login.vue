@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height>
-    <v-snackbar top content-class="justify-content" :value="logOutSnackbar" color="success">
+    <v-snackbar id="logOutNotificationId" top content-class="d-flex justify-center" :value="logOutSnackbar" color="success">
       <span>You're logged out</span> 
     </v-snackbar>
     <v-row fill-height align="center" justify="center">
@@ -137,5 +137,8 @@ export default {
 
 #loginFormId .v-icon {
   color: #219C3D;
+}
+#logOutNotificationId .v-snack__wrapper {
+  min-width: 0px;
 }
 </style>

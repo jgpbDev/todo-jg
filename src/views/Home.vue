@@ -8,6 +8,20 @@
         <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
       </v-snackbar>
       <v-row class="my-3">    <!-- Options buttons bar -->
+        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn small text color="grey" @click="sortBy('due')" v-bind="attrs" v-on="on">
+              <v-icon small left>
+                mdi-sort-calendar-ascending
+              </v-icon>
+              <span class="caption text-capitalize">
+                By due date
+              </span>
+            </v-btn>
+          </template>
+          <span>Sort tasks by due date</span>
+        </v-tooltip>
+        
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn small text color="grey" @click="sortBy('title')" v-bind="attrs" v-on="on">
@@ -47,19 +61,6 @@
             </v-btn>
           </template>
           <span>Sort tasks by creation date</span>
-        </v-tooltip>
-        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('due')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-sort-calendar-ascending
-              </v-icon>
-              <span class="caption text-capitalize">
-                By due date
-              </span>
-            </v-btn>
-          </template>
-          <span>Sort tasks by due date</span>
         </v-tooltip>
         <ButtonCounter @incrementInStore="vuexCounter = true"/>
       </v-row>

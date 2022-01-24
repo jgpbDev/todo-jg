@@ -89,7 +89,7 @@
           </v-flex>
           <v-flex id="chip-container" xs12 md6 class="mt-3">
             <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
-            <v-chip v-for="tag in tags" :key="tag.name" small :class="`${task.status} white--text caption mr-1`">Otra etiqueta</v-chip>
+            <v-chip v-for="tag in task.tags" :key="tag.name" small :class="`${task.status} white--text caption mr-1`">{{tag.name}}</v-chip>
           </v-flex>
         </v-row>
         <v-divider></v-divider>
@@ -129,7 +129,8 @@ export default {
       return this.apiState === ENUM.LOADED;
     },
     ...mapGetters([
-      'tasks'
+      'tasks',
+      'tags'
     ])
   },
   created() {

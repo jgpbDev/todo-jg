@@ -20,7 +20,7 @@ export default new Vuex.Store({
     session: null,
   },
   getters: {
-    tasks: state => state.tasksFromFirestore
+    tasks: state => state.tasksFromFirestore,
   },
   mutations: {
     increment(state) {

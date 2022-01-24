@@ -14,10 +14,13 @@ export default new Vuex.Store({
   state: {
     apiState: ENUM.INIT,
     count: 0,
-    tasksFromStore: [],
+    tasksFromFirestore: [],
     updatedDocs: [],
     taskToDelete: '',
     session: null,
+  },
+  getters: {
+    tasks: state => state.tasksFromFirestore
   },
   mutations: {
     increment(state) {
@@ -28,12 +31,12 @@ export default new Vuex.Store({
     },
     UPDATE_DOCS(state, updatedDocs) {
       let taskData;
-      state.tasksFromStore = [];
+      state.tasksFromFirestore = [];
       updatedDocs.forEach((doc) => {
-        if (!state.tasksFromStore.includes(doc.data())) {
+        if (!state.tasksFromFirestore.includes(doc.data())) {
           taskData = doc.data();
           taskData.id = doc.id;
-          state.tasksFromStore.push(taskData);
+          state.tasksFromFirestore.push(taskData);
         }
       });
       state.apiState = ENUM.LOADED;

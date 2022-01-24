@@ -4,7 +4,7 @@
 
     <v-container v-if="apiStateLoaded === true" class="my-5">
       <v-snackbar v-model="vuexCounter" :timeout="4000" top color="success">
-        <span>The counter in the store is: {{store.state.count}} </span>
+        <span>The counter in the store is: {{$store.state.count}} </span>
         <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
       </v-snackbar>
       <v-row class="my-3">    <!-- Options buttons bar -->
@@ -66,11 +66,11 @@
 
       <v-card flat v-for="task in tasks" :key="task.title">
         <v-row dense no-gutters :class="`pa-6 task ${task.status}`"> <!-- Notice the importance of the dense & no-gutters props -->
-          <v-flex xs12 md5>
+          <v-flex xs12 md6>
             <div class="caption grey--text">Task Title</div>
             <div>{{task.title}}</div>
           </v-flex>
-          <v-flex xs6 sm4 md1 class="mx-6">
+          <v-flex xs6 sm4 md1                                                                                                                               >
             <div class="caption grey--text">Person</div>
             <div>{{task.person}}</div>
           </v-flex>
@@ -82,12 +82,15 @@
             <div class="caption grey--text">Due by</div>
             <div>{{task.due}}</div>
           </v-flex>
-          <v-layout id="chip-container" align-end align-center justify-end>
-            <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
+          <v-flex xs6 sm4 md1 class="d-flex align-center justify-center">
             <v-btn text class="ma-0" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
               <v-icon small>mdi-trash-can</v-icon>
             </v-btn>
-          </v-layout>
+          </v-flex>
+          <v-flex id="chip-container" xs12 md6 class="mt-3">
+            <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
+            <v-chip v-for="tag in tags" :key="tag.name" small :class="`${task.status} white--text caption mr-1`">Otra etiqueta</v-chip>
+          </v-flex>
         </v-row>
         <v-divider></v-divider>
       </v-card>
@@ -98,29 +101,22 @@
 
 <script>
 import ButtonCounter from '@/components/ButtonCounter.vue';
-import store from '@/store/store';
 import ENUM from '@/store/enums';
 
-import { mapActions } from "vuex";
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   components: {
     ButtonCounter
   },
   data: () => ({
-    tasks: store.state.tasksFromStore,
     vuexCounter: false,
-    store: store
   }),
   methods: {
     sortBy(prop) {
       this.tasks.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
     },
     ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
-    setTasks() {
-      this.tasks = store.state.tasksFromStore;
-    },
     logDeleting(taskId) {
       this.deleteDoc(taskId);
     }
@@ -128,12 +124,13 @@ export default {
   computed: {
     ...mapState({
       apiState: state => state.apiState,
-      tasksFromStore: state => state.tasksFromStore
     }),
     apiStateLoaded() {
-      this.setTasks();
       return this.apiState === ENUM.LOADED;
     },
+    ...mapGetters([
+      'tasks'
+    ])
   },
   created() {
     this.gettingUpdatedDocs();

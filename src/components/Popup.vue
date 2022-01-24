@@ -11,7 +11,7 @@
         Add a new task
       </v-card-title>
       <v-card-text>
-        <v-form class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
+        <v-form id="addFormId" class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
           <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
           <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline"></v-textarea>
           <v-row v-for="(tag, index) in tags" :key="index" dense no-gutters>
@@ -102,4 +102,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#addFormId .v-icon { 
+    color: #219C3D;
+}
+</style>

@@ -12,8 +12,7 @@
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
       <v-app-bar-title class="text-uppercase grey--text">
-        <span class="font-weight-light">Todo</span>
-        <span>JG</span>
+        <span class="font-weight-light">Todo<span class="font-weight-medium">JG</span></span>
       </v-app-bar-title>
       <v-spacer></v-spacer>
 

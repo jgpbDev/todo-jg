@@ -19,37 +19,31 @@
 </template>
 
 <script>
-import store from '@/store/store';
 import ENUM from '@/store/enums';
 
-import { mapActions } from "vuex";
-import { mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
-  data: () => ({
-    tasks: store.state.tasksFromStore,
-  }),
   methods: {
     ...mapActions(["gettingUpdatedDocs"]),
-    setTasks() {
-      this.tasks = store.state.tasksFromStore;
-    }
   },
   computed: {
+    ...mapState({
+      apiState: state => state.apiState,
+      tasksFromStore: state => state.tasksFromStore
+    }),
+    ...mapGetters([
+      'tasks',
+    ]),
     myTasks() {
       return this.tasks.filter(elementInArray => {
         // Remember when we talked about the importance of having an array when using a v-for
         return elementInArray.person === 'jgpbDev';
       });
     },
-    ...mapState({
-      apiState: state => state.apiState,
-      tasksFromStore: state => state.tasksFromStore
-    }),
     apiStateLoaded() {
-      this.setTasks();
       return this.apiState === ENUM.LOADED;
-    }
+    },
   },
   async created() {
     this.gettingUpdatedDocs();

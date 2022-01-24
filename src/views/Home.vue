@@ -122,16 +122,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'tasks',
+      'tags'
+    ]),
     ...mapState({
       apiState: state => state.apiState,
     }),
     apiStateLoaded() {
       return this.apiState === ENUM.LOADED;
     },
-    ...mapGetters([
-      'tasks',
-      'tags'
-    ])
   },
   created() {
     this.gettingUpdatedDocs();

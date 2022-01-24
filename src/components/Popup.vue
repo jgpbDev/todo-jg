@@ -14,6 +14,16 @@
         <v-form class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
           <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
           <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline"></v-textarea>
+          <v-row v-for="(tag, index) in tags" :key="index" dense no-gutters>
+            <v-flex sm11>
+              <v-text-field label="Tag" v-model="tag.name" prepend-icon="mdi-tag-text"></v-text-field>
+            </v-flex>
+            <v-flex sm1 class="d-flex align-center justify-center">
+              <v-btn text class="ma-0" color="primary" fab x-small dark @click="addTag()">
+                <v-icon small>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-row>
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -39,7 +49,8 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
-    title: "", 
+    title: "",
+    tags: [{ name: '' }], 
     content: "",
     due: null,   //To format the date we installed date-fns with npm
     inputRules: [
@@ -47,6 +58,9 @@ export default {
     ]
   }),
   methods: {
+    addTag(){
+      this.tags.push({ name: '' })
+    },
     // This was problematic because in the end we import the addDoc and the collection functions in this 
     // document instead of in the fb.js file, also we declared as an async function this submit method
     async submit() {
@@ -55,6 +69,7 @@ export default {
         await addDoc(collection(db, "tasks"), {
           title: this.title,
           content: this.content,
+          tags: this.tags,
           createdAt: this.currentFormattedDate,
           due: format(parseISO(this.due), 'do MMM yyyy'),
           person: 'jgpbDev',
@@ -63,6 +78,7 @@ export default {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
+          this.tags =  [{ name: '' }];
           this.$refs.form.reset();
           this.$emit('taskAdded');
         });

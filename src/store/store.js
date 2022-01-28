@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import router from "@/router";
 import db from '@/fb'
-import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
+import { collection, doc, onSnapshot, addDoc, deleteDoc} from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 import ENUM from '@/store/enums'
@@ -58,6 +58,9 @@ export default new Vuex.Store({
       await onSnapshot(collection(db, 'tasks'), (updatedDocs) => {
         commit('UPDATE_DOCS', updatedDocs);
       });
+    },
+    async addDoc(_, taskToAdd) {
+      await addDoc(collection(db, 'tasks'), taskToAdd);
     },
     async deleteDoc(_, taskToDelete) {
       await deleteDoc(doc(db, 'tasks', taskToDelete));

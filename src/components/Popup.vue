@@ -12,9 +12,9 @@
       </v-card-title>
       <v-card-text>
         <v-form id="addFormId" class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
-          <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
-          <v-textarea label="Information" v-model="content" prepend-icon="mdi-pencil-outline"></v-textarea>
-          <v-row v-for="(tag, index) in tags" :key="index" dense no-gutters>
+          <v-text-field label="Title" v-model="taskData.title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
+          <v-textarea label="Information" v-model="taskData.content" prepend-icon="mdi-pencil-outline"></v-textarea>
+          <v-row v-for="(tag, index) in taskData.tags" :key="index" dense no-gutters>
             <v-flex sm11>
               <v-text-field label="Tag" v-model="tag.name" prepend-icon="mdi-tag-text"></v-text-field>
             </v-flex>
@@ -27,9 +27,9 @@
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-text-field text label="Due date" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
+              <v-text-field text label="Due date (click to set)" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
             </template>
-            <v-date-picker v-model="due"></v-date-picker>
+            <v-date-picker v-model="taskData.due"></v-date-picker>
           </v-menu>
           
           <v-btn text class="success mx-0 mt-3" @click="submit" :loading="loading">Add task</v-btn>
@@ -42,17 +42,20 @@
 <script>
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
-import db from '@/fb'
-import { collection, addDoc } from 'firebase/firestore';
+import { mapActions } from "vuex";
 
 export default {
   data: () => ({
     dialog: false,
     loading: false,
-    title: "",
-    tags: [{ name: '' }], 
-    content: "",
-    due: null,   //To format the date we installed date-fns with npm
+    taskData: {
+      title: "",
+      tags: [{ name: '' }], 
+      content: "",
+      person: 'jgpbDev',
+      status: 'ongoing',
+      due: null,   //To format the date we installed date-fns with npm
+    },
     inputRules: [
       v => (v || '').length >= 3 || `A minimum of 3 characters is required`
     ]
@@ -61,20 +64,16 @@ export default {
     addTag(){
       this.tags.push({ name: '' })
     },
+    ...mapActions(["addDoc"]),
     // This was problematic because in the end we import the addDoc and the collection functions in this 
     // document instead of in the fb.js file, also we declared as an async function this submit method
     async submit() {
       if(this.$refs.form.validate()){
         this.loading = true;
-        await addDoc(collection(db, "tasks"), {
-          title: this.title,
-          content: this.content,
-          tags: this.tags,
-          createdAt: this.currentFormattedDate,
-          due: format(parseISO(this.due), 'do MMM yyyy'),
-          person: 'jgpbDev',
-          status: 'ongoing'
-        }).then(() => {
+        this.taskData.createdAt = this.currentFormattedDate;
+        this.taskData.due = format(parseISO(this.taskData.due), 'do MMM yyyy');
+
+        await this.addDoc(this.taskData).then(() => {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
@@ -88,7 +87,7 @@ export default {
   computed: {
     formattedDate() {
       // Here we have to notice that the library used changed and today doesn't have support for strings
-      return this.due ? format(parseISO(this.due), 'do MMM yyyy') : '';
+      return this.taskData.due ? format(parseISO(this.taskData.due), 'do MMM yyyy') : '';
     },
     currentFormattedDate() {
       const y = new Date().getFullYear();
@@ -97,7 +96,9 @@ export default {
       const currentDate = y + '-' + m + '-' + d;
 
       return format(parseISO(currentDate), 'do MMM yyyy')
-    }
+    },
+  },
+  created() {
   }
 };
 </script>

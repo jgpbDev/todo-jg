@@ -14,16 +14,16 @@
         <v-form id="addFormId" class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
           <v-text-field label="Title" v-model="taskData.title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
           <v-textarea label="Information" v-model="taskData.content" prepend-icon="mdi-pencil-outline"></v-textarea>
-          <v-row v-for="(tag, index) in taskData.tags" :key="index" dense no-gutters>
+          <!-- <v-row v-for="(tag, index) in taskData.tags" :key="index" dense no-gutters>
             <v-flex sm11>
-              <v-text-field label="Tag" v-model="tag.name" prepend-icon="mdi-tag-text"></v-text-field>
+              <v-text-field label="Tag" v-model="tag[index]" prepend-icon="mdi-tag-text"></v-text-field>
             </v-flex>
             <v-flex sm1 class="d-flex align-center justify-center">
-              <v-btn text class="ma-0" color="primary" fab x-small dark @click="addTag()">
+              <v-btn text class="ma-0" color="primary" fab x-small dark @click="addAnotherTag()">
                 <v-icon small>mdi-plus-circle</v-icon>
               </v-btn>
             </v-flex>
-          </v-row>
+          </v-row> -->
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -50,7 +50,7 @@ export default {
     loading: false,
     taskData: {
       title: "",
-      tags: [{ name: '' }], 
+      // tags: [''], 
       content: "",
       person: 'jgpbDev',
       status: 'ongoing',
@@ -61,9 +61,9 @@ export default {
     ]
   }),
   methods: {
-    addTag(){
-      this.tags.push({ name: '' })
-    },
+    // addAnotherTag(){
+    //   this.taskData.tags.push('')
+    // },
     ...mapActions(["addDoc"]),
     // This was problematic because in the end we import the addDoc and the collection functions in this 
     // document instead of in the fb.js file, also we declared as an async function this submit method
@@ -77,7 +77,7 @@ export default {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
-          this.tags =  [{ name: '' }];
+          // this.taskData.tags =  [{ name: '' }];
           this.$refs.form.reset();
           this.$emit('taskAdded');
         });

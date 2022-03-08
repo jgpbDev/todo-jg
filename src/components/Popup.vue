@@ -14,20 +14,23 @@
         <v-form id="addFormId" class="px-3" ref="form">      <!-- Important to give a reference to the form to use it in the Vue instance -->
           <v-text-field label="Title" v-model="taskData.title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
           <v-textarea label="Information" v-model="taskData.content" prepend-icon="mdi-pencil-outline"></v-textarea>
-          <!-- <v-row v-for="(tag, index) in taskData.tags" :key="index" dense no-gutters>
+          <v-row dense no-gutters>
             <v-flex sm11>
-              <v-text-field label="Tag" v-model="tag[index]" prepend-icon="mdi-tag-text"></v-text-field>
+              <v-text-field label="Tag" v-model="tag" prepend-icon="mdi-tag-text"></v-text-field>
             </v-flex>
             <v-flex sm1 class="d-flex align-center justify-center">
-              <v-btn text class="ma-0" color="primary" fab x-small dark @click="addAnotherTag()">
+              <v-btn text class="ma-0" color="primary" fab x-small dark @click="addTag(tag)">
                 <v-icon small>mdi-plus-circle</v-icon>
               </v-btn>
             </v-flex>
-          </v-row> -->
+          </v-row>
+          <v-row dense no-gutters class="mx-4">
+            <v-chip v-for="(tag,index) in taskData.tags" :key="index" small class="secondary white--text caption mr-1 mb-1">{{tag}}</v-chip>
+          </v-row>
           
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-text-field text label="Due date (click to set)" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
+              <v-text-field class="mt-6" text label="Due date (click to set)" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
             </template>
             <v-date-picker v-model="taskData.due"></v-date-picker>
           </v-menu>
@@ -48,9 +51,10 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
+    tag: '',
     taskData: {
       title: "",
-      // tags: [''], 
+      tags: [], 
       content: "",
       person: 'jgpbDev',
       status: 'ongoing',
@@ -61,9 +65,11 @@ export default {
     ]
   }),
   methods: {
-    // addAnotherTag(){
-    //   this.taskData.tags.push('')
-    // },
+    addTag(tag){
+      this.taskData.tags.push(tag);
+      this.tag = ''
+      console.warn('addTag() called');
+    },
     ...mapActions(["addDoc"]),
     // This was problematic because in the end we import the addDoc and the collection functions in this 
     // document instead of in the fb.js file, also we declared as an async function this submit method

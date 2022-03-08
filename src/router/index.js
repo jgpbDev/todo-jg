@@ -8,7 +8,7 @@ import Team from '../views/Team.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/',
+    path: '*',
     name: 'Login',
     component: Login
   }, 
@@ -26,12 +26,7 @@ const routes = [{
     path: '/team',
     name: 'Team',
     component: Team
-  }, 
-  {
-    path: '*',
-    name: 'Login',
-    component: Login
-  }
+  },
 ]
 
 const router = new VueRouter({

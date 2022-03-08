@@ -32,7 +32,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field class="mt-6" text label="Due date (click to set)" prepend-icon="mdi-calendar-range" :value="formattedDate" v-bind="attrs" v-on="on"></v-text-field>
             </template>
-            <v-date-picker v-model="taskData.due"></v-date-picker>
+            <v-date-picker v-model="calendarPickerDate"></v-date-picker>
           </v-menu>
           
           <v-btn text class="success mx-0 mt-3" @click="submit" :loading="loading">Add task</v-btn>
@@ -52,13 +52,14 @@ export default {
     dialog: false,
     loading: false,
     tag: '',
+    calendarPickerDate: '',
     taskData: {
       title: "",
       tags: [], 
       content: "",
       person: 'jgpbDev',
       status: 'ongoing',
-      due: null,   //To format the date we installed date-fns with npm
+      due: '',   //To format the date we installed date-fns with npm
     },
     inputRules: [
       v => (v || '').length >= 3 || `A minimum of 3 characters is required`
@@ -77,13 +78,13 @@ export default {
       if(this.$refs.form.validate()){
         this.loading = true;
         this.taskData.createdAt = this.currentFormattedDate;
-        this.taskData.due = format(parseISO(this.taskData.due), 'do MMM yyyy');
+        this.taskData.due = this.formattedDate;
 
         await this.addDoc(this.taskData).then(() => {
           console.log('Added to DB');
           this.dialog = false;
           this.loading = false;
-          // this.taskData.tags =  [{ name: '' }];
+          this.taskData.tags = [];
           this.$refs.form.reset();
           this.$emit('taskAdded');
         });
@@ -93,7 +94,7 @@ export default {
   computed: {
     formattedDate() {
       // Here we have to notice that the library used changed and today doesn't have support for strings
-      return this.taskData.due ? format(parseISO(this.taskData.due), 'do MMM yyyy') : '';
+      return this.calendarPickerDate ? format(parseISO(this.calendarPickerDate), 'do MMM yyyy') : '';
     },
     currentFormattedDate() {
       const y = new Date().getFullYear();

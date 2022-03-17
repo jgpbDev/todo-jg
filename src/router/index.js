@@ -4,30 +4,37 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Tasks from '../views/Tasks.vue'
 import Team from '../views/Team.vue'
+import Gallery from "../views/Gallery.vue";
 
 Vue.use(VueRouter)
 
-const routes = [{
-    path: '*',
-    name: 'Login',
-    component: Login
-  }, 
+const routes = [
   {
-    path: '/home',
-    name: 'Home',
-    component: Home
+    path: "*",
+    name: "Login",
+    component: Login,
   },
   {
-    path: '/tasks',
-    name: 'Tasks',
-    component: Tasks
+    path: "/home",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/team',
-    name: 'Team',
-    component: Team
+    path: "/tasks",
+    name: "Tasks",
+    component: Tasks,
   },
-]
+  {
+    path: "/team",
+    name: "Team",
+    component: Team,
+  },
+  {
+    path: "/gallery",
+    name: "Gallery",
+    component: Gallery,
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',

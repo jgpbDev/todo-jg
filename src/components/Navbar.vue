@@ -47,8 +47,11 @@
           </v-avatar>
         </v-flex>
         <p class="white--text subheading mt-3">jgpbDev</p>
-        <v-flex class="mt-4 mb-3">
+        <v-flex v-if="currentRouteName !== 'Gallery'" class="mt-4 mb-3">
           <Popup @taskAdded="snackbar = true"/>
+        </v-flex>
+        <v-flex v-else class="mt-4 mb-3">
+          <UploadImage @imgUploaded="snackbar = true"/>
         </v-flex>
       </v-layout>
 
@@ -75,6 +78,7 @@
 
 <script>
 import Popup from './Popup.vue'
+import UploadImage from './UploadImage.vue'
 import Notifications from '@/components/Notifications';
 import store from '@/store/store';
 
@@ -83,7 +87,8 @@ import { mapActions } from "vuex";
 export default {
   components: {
     Popup,
-    Notifications
+    Notifications,
+    UploadImage
   },
   data: () => ({
     drawer: false,
@@ -94,6 +99,7 @@ export default {
       { icon: "mdi-view-dashboard", text: "Home", route: "/home" },
       { icon: "mdi-folder", text: "My tasks", route: "/tasks" },
       { icon: "mdi-account-multiple", text: "Team", route: "/team" },
+      { icon: "mdi-view-gallery", text: "Gallery", route: "/gallery" },
     ],
   }),
   methods: {
@@ -105,6 +111,9 @@ export default {
     }
   },
   computed: {
+    currentRouteName() {
+        return this.$route.name;
+    }
   },
   created() {
   }

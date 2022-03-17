@@ -2,8 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import router from "@/router";
-import db from '@/fb'
+import {db} from '@/fb'
 import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 import ENUM from '@/store/enums'
@@ -60,14 +61,22 @@ export default new Vuex.Store({
       });
     },
     addDoc(_, taskToAdd) {
-
       if (taskToAdd) {
         console.warn("The taskToAdd passed and here it is: ", taskToAdd);
       } else {
         console.error("Without taskToAdd")
       }
-
       // await addDoc(collection(db, 'tasks'), taskToAdd);
+    },
+    uploadImg(_, imgToAdd) {
+      const storage = getStorage();
+      // const imgRef = ref(storage, imgToAdd.img.name);
+      const imagesRef = ref(storage, 'images/'+imgToAdd.name);
+      // console.log("This are my refs, imgRef: "+ imgRef + ", imagesRef: "+imagesRef);
+
+      uploadBytes(imagesRef, imgToAdd).then(() => {
+        console.warn("Uploaded our file!")
+      })
     },
     async deleteDoc(_, taskToDelete) {
       await deleteDoc(doc(db, 'tasks', taskToDelete));
@@ -92,13 +101,10 @@ export default new Vuex.Store({
         alert(error.message);
       });
     },
-    async registerNewUser({commit}, {email, password}) {
+    async registerNewUser(_, {email, password}) {
       const auth = getAuth();
       await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("You've been registered and logged in as: " + userCredential.user);
-          commit('SIGN_IN', userCredential)
-        }).catch((error) => {
+        .catch((error) => {
           console.log(error.code);
           alert(error.message);
         });

@@ -90,7 +90,7 @@
           </v-flex>
           <v-flex id="chip-container" xs12 md6 class="mt-3">
             <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
-            <v-chip v-for="tag in task.tags" :key="tag.name" small class="secondary white--text captionmr-1">{{tag.name}}</v-chip>
+            <v-chip v-for="(tag, index) in task.tags" :key="index" small class="secondary white--text captionmr-1">{{tag}}</v-chip>
           </v-flex>
         </v-row>
         <v-divider></v-divider>

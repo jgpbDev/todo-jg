@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import router from "@/router";
 import {db} from '@/fb'
-import { collection, doc, onSnapshot, deleteDoc} from 'firebase/firestore';
+import { collection, doc, onSnapshot, deleteDoc, addDoc} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
@@ -60,13 +60,13 @@ export default new Vuex.Store({
         commit('UPDATE_DOCS', updatedDocs);
       });
     },
-    addDoc(_, taskToAdd) {
+    async addDoc(_, taskToAdd) {
       if (taskToAdd) {
         console.warn("The taskToAdd passed and here it is: ", taskToAdd);
       } else {
         console.error("Without taskToAdd")
       }
-      // await addDoc(collection(db, 'tasks'), taskToAdd);
+        await addDoc(collection(db, 'tasks'), taskToAdd);
     },
     uploadImg(_, imgToAdd) {
       const storage = getStorage();

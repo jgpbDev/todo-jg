@@ -79,12 +79,6 @@ export default {
         this.loading = true;
         this.taskData.createdAt = this.currentFormattedDate;
         this.taskData.due = this.formattedDate;
-
-        // if (this.taskData.tasks === []) {
-          
-        // } else {
-
-        // }
         
         await this.addDoc(this.taskData).then(() => {
           console.log('Added to DB');

@@ -4,131 +4,206 @@
 
     <v-container v-if="apiStateLoaded === true" class="my-5">
       <v-snackbar v-model="vuexCounter" :timeout="4000" top color="success">
-        <span>The counter in the store is: {{$store.state.count}} </span>
-        <v-btn text class="ml-3" color="white" @click="vuexCounter = false">Okay</v-btn>
+        <span>The counter in the store is: {{ $store.state.count }} </span>
+        <v-btn text class="ml-3" color="white" @click="vuexCounter = false"
+          >Okay</v-btn
+        >
       </v-snackbar>
-      <v-row class="my-3">    <!-- Options buttons bar -->
-        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+      <v-row class="my-3">
+        <!-- Options buttons bar -->
+        <v-tooltip top>
+          <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('due')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-sort-calendar-ascending
-              </v-icon>
-              <span class="caption text-capitalize">
-                By due date
-              </span>
+            <v-btn
+              small
+              text
+              color="grey"
+              @click="sortBy('due')"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon small left> mdi-sort-calendar-ascending </v-icon>
+              <span class="caption text-capitalize"> By due date </span>
             </v-btn>
           </template>
           <span>Sort tasks by due date</span>
         </v-tooltip>
-        
+
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('title')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-folder
-              </v-icon>
-              <span class="caption text-capitalize">
-                By task/name
-              </span>
+            <v-btn
+              small
+              text
+              color="grey"
+              @click="sortBy('title')"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon small left> mdi-folder </v-icon>
+              <span class="caption text-capitalize"> By task/name </span>
             </v-btn>
           </template>
           <span>Sort tasks by task name</span>
         </v-tooltip>
-        
-        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+
+        <v-tooltip top>
+          <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('person')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-account
-              </v-icon>
-              <span class="caption text-capitalize">
-                By person
-              </span>
+            <v-btn
+              small
+              text
+              color="grey"
+              @click="sortBy('person')"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon small left> mdi-account </v-icon>
+              <span class="caption text-capitalize"> By person </span>
             </v-btn>
           </template>
           <span>Sort tasks by person</span>
         </v-tooltip>
-        <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
+        <v-tooltip top>
+          <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('createdAt')" v-bind="attrs" v-on="on">
-              <v-icon small left>
-                mdi-sort-calendar-ascending
-              </v-icon>
-              <span class="caption text-capitalize">
-                By creation date
-              </span>
+            <v-btn
+              small
+              text
+              color="grey"
+              @click="sortBy('createdAt')"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon small left> mdi-sort-calendar-ascending </v-icon>
+              <span class="caption text-capitalize"> By creation date </span>
             </v-btn>
           </template>
           <span>Sort tasks by creation date</span>
         </v-tooltip>
-        <ButtonCounter @incrementInStore="vuexCounter = true"/>
+        <ButtonCounter @incrementInStore="vuexCounter = true" />
       </v-row>
 
       <v-card flat v-for="task in tasks" :key="task.title">
-        <v-row dense no-gutters :class="`pa-6 task ${task.status}`"> <!-- Notice the importance of the dense & no-gutters props -->
+        <v-row dense no-gutters :class="`pa-6 task ${task.status}`">
+          <!-- Notice the importance of the dense & no-gutters props -->
           <v-flex xs12 md6>
             <div class="caption grey--text">Task Title</div>
-            <div>{{task.title}}</div>
+            <div>{{ task.title }}</div>
           </v-flex>
-          <v-flex xs6 sm4 md1                                                                                                                               >
+          <v-flex xs6 sm4 md1>
             <div class="caption grey--text">Person</div>
-            <div>{{task.person}}</div>
+            <div>{{ task.person }}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
             <div class="caption grey--text">Created at</div>
-            <div>{{task.createdAt}}</div>
+            <div>{{ task.createdAt }}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
             <div class="caption grey--text">Due by</div>
-            <div>{{task.due}}</div>
+            <div>{{ task.due }}</div>
           </v-flex>
           <v-flex xs6 sm4 md1 class="d-flex align-center justify-center">
-            <v-btn text class="ma-0" color="delete" fab x-small dark @click="logDeleting(`${task.id}`)">
+            <v-btn
+              text
+              class="ma-0"
+              color="delete"
+              fab
+              x-small
+              dark
+              @click="logDeleting(`${task.id}`)"
+            >
               <v-icon small>mdi-trash-can</v-icon>
             </v-btn>
           </v-flex>
           <v-flex id="chip-container" xs12 md6 class="mt-3">
-            <v-chip small :class="`${task.status} white--text caption mr-1`">{{task.status}}</v-chip>
-            <v-chip v-for="(tag, index) in task.tags" :key="index" small class="secondary white--text captionmr-1">{{tag}}</v-chip>
+            <v-chip small :class="`${task.status} white--text caption mr-1`">{{
+              task.status
+            }}</v-chip>
+            <v-chip
+              v-for="(tag, index) in task.tags"
+              :key="index"
+              small
+              class="secondary white--text captionmr-1"
+              >{{ tag }}</v-chip
+            >
           </v-flex>
         </v-row>
         <v-divider></v-divider>
       </v-card>
     </v-container>
-
   </div>
 </template>
 
 <script>
-import ButtonCounter from '@/components/ButtonCounter.vue';
-import ENUM from '@/store/enums';
+import ButtonCounter from "@/components/ButtonCounter.vue";
+import ENUM from "@/store/enums";
 
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   components: {
-    ButtonCounter
+    ButtonCounter,
   },
   data: () => ({
     vuexCounter: false,
+    cosas: [
+      { color: "white", size: "XXL" },
+      { color: "red", size: "XL" },
+      { color: "black", size: "M" },
+    ],
+    taskcitas: [
+      {
+        content: "",
+        due: "1st Feb 2022",
+        status: "ongoing",
+        createdAt: "1st Feb 2022",
+        title: "C",
+        tags: [{ name: "" }],
+        person: "jgpbDev",
+        id: "JzJSZver6GgOIqHQVsfe",
+      },
+      {
+        status: "ongoing",
+        content: "",
+        person: "jgpbDev",
+        title: "A",
+        createdAt: "2nd Feb 2022",
+        due: "2nd Feb 2022",
+        tags: [{ name: "" }],
+        id: "fEzUkFB0W4XVon4Ppky1",
+      },
+      {
+        person: "jgpbDev",
+        tags: ["First tag, yei", "SecondTag o.o"],
+        createdAt: "3rd Mar 2022",
+        content:
+          "Esta es la info de esta prueba, de verdad espero que funcione, ojalá uwu",
+        status: "ongoing",
+        title: "B",
+        due: "3rd Feb 2022",
+        id: "OjbSWnA7gWGjckLUnyZi",
+      }
+    ],
   }),
   methods: {
-    sortBy(prop) {
-      this.tasks.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
-    },
     ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
+    sortBy(prop) {
+      console.log("Prop passed", prop);
+      this.tasks.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+      this.taskcitas.sort((a, b) => (a["title"] > b["title"] ? 1 : -1));
+      console.log(JSON.stringify(this.tasks));
+      // this.cosas.forEach(element => {
+      //   console.log('Element passed in its color prop', element['color']);
+      // });
+    },
     logDeleting(taskId) {
       this.deleteDoc(taskId);
-    }
+    },
   },
   computed: {
-    ...mapGetters([
-      'tasks',
-      'tags'
-    ]),
+    ...mapGetters(["tasks"]),
     ...mapState({
-      apiState: state => state.apiState,
+      apiState: (state) => state.apiState,
     }),
     apiStateLoaded() {
       return this.apiState === ENUM.LOADED;

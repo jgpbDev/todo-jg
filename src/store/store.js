@@ -17,13 +17,16 @@ export default new Vuex.Store({
     count: 0,
     tasksFromFirestore: [],
     updatedDocs: [],
-    taskToDelete: '',
+    taskToDelete: "",
     session: null,
+    list: [
+      { color: "white", size: "XXL" },
+      { color: "red", size: "XL" },
+      { color: "black", size: "M" },
+    ],
   },
   getters: {
-    tasks: state => {
-      return state.tasksFromFirestore.sort((a, b) => a['due'] < b['due'] ? -1 : 1)
-    },
+    tasks: (state) => state.tasksFromFirestore,
   },
   mutations: {
     increment(state) {
@@ -46,70 +49,81 @@ export default new Vuex.Store({
     },
     SIGN_OUT(state, currentView) {
       state.session = null;
-      if (currentView !== 'Login') {
-        router.push({path: '/'});
+      if (currentView !== "Login") {
+        router.push({ path: "/" });
       }
     },
     SET_SESSION(state, userCredential) {
       state.session = userCredential;
-    }
+    },
+    SORT_TASKS(state, sortKey) {
+      state.status = ENUM.LOADING;
+      const tasks = state.tasksFromFirestore;
+      tasks.sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1));
+      state.tasksFromFirestore = tasks;
+      state.status = ENUM.LOADED;
+    },
   },
   actions: {
-    async gettingUpdatedDocs({commit}) {
-      await onSnapshot(collection(db, 'tasks'), (updatedDocs) => {
-        commit('UPDATE_DOCS', updatedDocs);
+    async gettingUpdatedDocs({ commit }) {
+      await onSnapshot(collection(db, "tasks"), (updatedDocs) => {
+        commit("UPDATE_DOCS", updatedDocs);
       });
     },
     async addDoc(_, taskToAdd) {
       if (taskToAdd) {
         console.warn("The taskToAdd passed and here it is: ", taskToAdd);
       } else {
-        console.error("Without taskToAdd")
+        console.error("Without taskToAdd");
       }
-        await addDoc(collection(db, 'tasks'), taskToAdd);
+      await addDoc(collection(db, "tasks"), taskToAdd);
     },
     uploadImg(_, imgToAdd) {
       const storage = getStorage();
       // const imgRef = ref(storage, imgToAdd.img.name);
-      const imagesRef = ref(storage, 'images/'+imgToAdd.name);
+      const imagesRef = ref(storage, "images/" + imgToAdd.name);
       // console.log("This are my refs, imgRef: "+ imgRef + ", imagesRef: "+imagesRef);
 
       uploadBytes(imagesRef, imgToAdd).then(() => {
-        console.warn("Uploaded our file!")
-      })
+        console.warn("Uploaded our file!");
+      });
     },
     async deleteDoc(_, taskToDelete) {
-      await deleteDoc(doc(db, 'tasks', taskToDelete));
+      await deleteDoc(doc(db, "tasks", taskToDelete));
     },
-    async signIn(_, {email, password}) {
+    async signIn(_, { email, password }) {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log('userCredential from sign in', userCredential)
-      }).catch((error) => {
-        console.error(error.code);
-        alert(error.message);
-      });
-    },
-    async signOut(){
-      const auth = getAuth();
-      await signOut(auth).then(() => {
-        // alert("The user logged out");
-        // commit('SIGN_OUT')
-      }).catch((error) => {
-        console.error(error.code);
-        alert(error.message);
-      });
-    },
-    async registerNewUser(_, {email, password}) {
-      const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log("userCredential from sign in", userCredential);
+        })
         .catch((error) => {
-          console.log(error.code);
+          console.error(error.code);
           alert(error.message);
         });
     },
-    async checkAuth({commit}) {
+    async signOut() {
+      const auth = getAuth();
+      await signOut(auth)
+        .then(() => {
+          // alert("The user logged out");
+          // commit('SIGN_OUT')
+        })
+        .catch((error) => {
+          console.error(error.code);
+          alert(error.message);
+        });
+    },
+    async registerNewUser(_, { email, password }) {
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, email, password).catch(
+        (error) => {
+          console.log(error.code);
+          alert(error.message);
+        }
+      );
+    },
+    async checkAuth({ commit }) {
       const auth = getAuth();
       await onAuthStateChanged(auth, (user) => {
         // const currentUser = auth.currentUser;
@@ -117,15 +131,17 @@ export default new Vuex.Store({
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
-          console.log('[CHECK_AUTH] User from firebase: ', user);
-          commit('SET_SESSION', user);
-          router.currentRoute.name === 'Login' ? router.push({path: '/home'}) : console.log("You're already inside the app");
+          console.log("[CHECK_AUTH] User from firebase: ", user);
+          commit("SET_SESSION", user);
+          router.currentRoute.name === "Login"
+            ? router.push({ path: "/home" })
+            : console.log("You're already inside the app");
         } else {
           // alert('CHECKAUTH: The user changed its status to logged out');
-          console.log('[CHECK_AUTH] Without user from firebase: ', user);
-          commit('SIGN_OUT', router.currentRoute.name);
+          console.log("[CHECK_AUTH] Without user from firebase: ", user);
+          commit("SIGN_OUT", router.currentRoute.name);
         }
       });
-    }
-  }
+    },
+  },
 });

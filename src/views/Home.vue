@@ -10,7 +10,7 @@
       <v-row class="my-3">    <!-- Options buttons bar -->
         <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('due')" v-bind="attrs" v-on="on">
+            <v-btn small text color="grey" @click="SORT_TASKS('due')" v-bind="attrs" v-on="on">
               <v-icon small left>
                 mdi-sort-calendar-ascending
               </v-icon>
@@ -21,10 +21,9 @@
           </template>
           <span>Sort tasks by due date</span>
         </v-tooltip>
-        
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('title')" v-bind="attrs" v-on="on">
+            <v-btn small text color="grey" @click="SORT_TASKS('title')" v-bind="attrs" v-on="on">
               <v-icon small left>
                 mdi-folder
               </v-icon>
@@ -35,10 +34,9 @@
           </template>
           <span>Sort tasks by task name</span>
         </v-tooltip>
-        
         <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('person')" v-bind="attrs" v-on="on">
+            <v-btn small text color="grey" @click="SORT_TASKS('person')" v-bind="attrs" v-on="on">
               <v-icon small left>
                 mdi-account
               </v-icon>
@@ -51,7 +49,7 @@
         </v-tooltip>
         <v-tooltip top>     <!-- Maybe we can customize the size and presentation of the tooltip -->
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small text color="grey" @click="sortBy('createdAt')" v-bind="attrs" v-on="on">
+            <v-btn small text color="grey" @click="SORT_TASKS('createdAt')" v-bind="attrs" v-on="on">
               <v-icon small left>
                 mdi-sort-calendar-ascending
               </v-icon>
@@ -104,7 +102,7 @@
 import ButtonCounter from '@/components/ButtonCounter.vue';
 import ENUM from '@/store/enums';
 
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 
 export default {
   components: {
@@ -114,10 +112,8 @@ export default {
     vuexCounter: false,
   }),
   methods: {
-    sortBy(prop) {
-      this.tasks.sort((a,b) => a[prop] < b[prop] ? -1 : 1)
-    },
     ...mapActions(["gettingUpdatedDocs", "deleteDoc"]),
+    ...mapMutations(["SORT_TASKS"]),
     logDeleting(taskId) {
       this.deleteDoc(taskId);
     }
@@ -125,7 +121,6 @@ export default {
   computed: {
     ...mapGetters([
       'tasks',
-      'tags'
     ]),
     ...mapState({
       apiState: state => state.apiState,
